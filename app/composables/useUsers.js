@@ -14,11 +14,7 @@ export const useUsers = () => {
   const loading = ref(false)
   const error = ref("")
 
-    const {
-    user: firestoreUser,
-    loadUser,
-    addUser
-  } = useUsers()
+
 
   const loadUsers = async () => {
 
