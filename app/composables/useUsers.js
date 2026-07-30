@@ -3,7 +3,8 @@ import {
   createUser,
   getUserById,
   getUserByUid,
-  getUsersByFavoriteTeam
+  getUsersByFavoriteTeam,
+  updateUser
 } from "~/services/usersService"
 
 export const useUsers = () => {
@@ -66,6 +67,20 @@ export const useUsers = () => {
 
   }
 
+  const editUser = async (id, data) => {
+        try {
+    
+          await updateUser(id, data)
+    
+          await loadUsers()
+    
+        } catch(err) {
+          error.value = err.message
+        }
+      }
+    
+      
+
   const loadUserByUid = async (uid) => {
 
     try {
@@ -120,7 +135,8 @@ export const useUsers = () => {
     loadUser,
     addUser,
     loadUserByUid,
-    loadUsersByFavoriteTeam
+    loadUsersByFavoriteTeam,
+    editUser
 
   }
 

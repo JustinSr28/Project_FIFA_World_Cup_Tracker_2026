@@ -8,22 +8,17 @@ import {
 
 import { useUsers } from "~/composables/useUsers"
 
-//import { db } from "~/firebase" 
-
-
-
-import { auth } from "~/auth/auth.js"
-import firebase from "firebase/compat/app"
 export const useAuth = () => {
+  const { $auth } = useNuxtApp()
   const user = useState("user", () => null)
-   const {
+  const {
     user: firestoreUser,
     loadUser,
     addUser
   } = useUsers()
 
 
-    const loginGoogle = async () => {
+  const loginGoogle = async () => {
 
     try {
 
@@ -32,15 +27,27 @@ export const useAuth = () => {
       provider.setCustomParameters({
         prompt: "select_account"
       })
-
-      const result = await signInWithPopup(auth, provider)
+      console.log("Iniciando login con Google...")
+      const result = await signInWithPopup($auth, provider)
 
       const firebaseUser = result.user
+      console.log("Usuario Firebase:", firebaseUser)
+
+
+      console.log("UID:", firebaseUser.uid)
+      console.log("Nombre:", firebaseUser.displayName)
+      console.log("Email:", firebaseUser.email)
+      console.log("Foto:", firebaseUser.photoURL)
 
 
       await loadUser(firebaseUser.uid)
+      console.log(
+        "Usuario encontrado en Firestore:",
+        firestoreUser.value
+      )
 
-     
+
+
       if (!firestoreUser.value) {
 
         await addUser({
@@ -51,10 +58,15 @@ export const useAuth = () => {
           favoriteTeam: "",
           points: 0
         })
+        console.log("Usuario creado correctamente")
+      }
+      else {
+        console.log("Usuario NO creado correctamente")
 
       }
 
       user.value = firebaseUser
+
 
     } catch (error) {
 
@@ -63,18 +75,19 @@ export const useAuth = () => {
     }
 
   }
-  
+
 
   const logout = async () => {
-    await signOut(auth)
+    const { $auth } = useNuxtApp()
+    await signOut($auth)
 
     user.value = null
 
-    navigateTo("/auth/login")
+    navigateTo("/")
   }
 
   const initAuth = () => {
-    onAuthStateChanged(auth, (firebaseUser) => {
+    onAuthStateChanged($auth, (firebaseUser) => {
       user.value = firebaseUser
     })
   }

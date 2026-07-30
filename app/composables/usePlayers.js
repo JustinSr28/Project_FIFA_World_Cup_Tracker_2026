@@ -3,7 +3,9 @@ import {
   createPlayer,
   getPlayerById,
   getPlayersByTeam,
-  getPlayersByPosition
+  getPlayersByPosition,
+  deletePlayer,
+  updatePlayer
 } from "~/services/playersService"
 
 export const usePlayers = () => {
@@ -63,6 +65,29 @@ export const usePlayers = () => {
     await loadPlayers()
 
   }
+  const editPlayer = async (id, data) => {
+      try {
+  
+        await updatePlayer(id, data)
+  
+        await loadPlayers()
+  
+      } catch(err) {
+        error.value = err.message
+      }
+    }
+  
+    const removePlayer = async (id) => {
+      try {
+  
+        await deletePlayer(id)
+  
+        await loadPlayers()
+  
+      } catch(err) {
+        error.value = err.message
+      }
+    }
 
   const loadPlayersByTeam = async (teamId) => {
 
@@ -118,7 +143,9 @@ export const usePlayers = () => {
     loadPlayer,
     addPlayer,
     loadPlayersByTeam,
-    loadPlayersByPosition
+    loadPlayersByPosition,
+    removePlayer,
+    editPlayer
 
   }
 

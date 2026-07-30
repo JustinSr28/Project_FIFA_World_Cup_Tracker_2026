@@ -3,7 +3,9 @@ import {
   createStanding,
   getStandingById,
   getStandingsByGroup,
-  getStandingByTeam
+  getStandingByTeam,
+  deleteStanding,
+  updateStanding
 } from "~/services/standingsService"
 
 export const useStandings = () => {
@@ -64,6 +66,31 @@ export const useStandings = () => {
 
   }
 
+  const editStanding = async (id, data) => {
+        try {
+    
+          await updateStanding(id, data)
+    
+          await loadStandings()
+    
+        } catch(err) {
+          error.value = err.message
+        }
+      }
+    
+      const removeStanding= async (id) => {
+        try {
+    
+          await deleteStanding(id)
+    
+          await loadStandings()
+    
+        } catch(err) {
+          error.value = err.message
+        }
+      }
+  
+
   const loadStandingsByGroup = async (group) => {
 
     try {
@@ -118,7 +145,10 @@ export const useStandings = () => {
     loadStanding,
     addStanding,
     loadStandingsByGroup,
-    loadStandingByTeam
+    loadStandingByTeam,
+    editStanding,
+    removeStanding
+    
 
   }
 

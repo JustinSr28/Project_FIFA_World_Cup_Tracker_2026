@@ -3,7 +3,9 @@ import {
   createTeam,
   getTeamById,
   getTeamsByGroup,
-  getTeamsByConfederation
+  getTeamsByConfederation,
+  deleteTeam,
+  updateTeam
 } from "~/services/teamsService"
 
 export const useTeams = () => {
@@ -64,6 +66,30 @@ export const useTeams = () => {
 
   }
 
+  const editTeam = async (id, data) => {
+        try {
+    
+          await updateTeam(id, data)
+    
+          await loadTeams()
+    
+        } catch(err) {
+          error.value = err.message
+        }
+      }
+    
+      const removeTeam = async (id) => {
+        try {
+    
+          await deleteTeam(id)
+    
+          await loadTeams()
+    
+        } catch(err) {
+          error.value = err.message
+        }
+      }
+
   const loadTeamsByGroup = async (group) => {
 
     try {
@@ -118,7 +144,9 @@ export const useTeams = () => {
     loadTeam,
     addTeam,
     loadTeamsByGroup,
-    loadTeamsByConfederation
+    loadTeamsByConfederation,
+    editTeam,
+    removeTeam
 
   }
 

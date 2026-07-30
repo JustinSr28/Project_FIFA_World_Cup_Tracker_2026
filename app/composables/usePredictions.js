@@ -4,7 +4,9 @@ import {
   getPredictionById,
   getPredictionsByUser,
   getPredictionsByMatch,
-  getPredictionsByWinner
+  getPredictionsByWinner,
+  deletePrediction,
+  updatePrediction
 } from "~/services/predictionsService"
 
 export const usePredictions = () => {
@@ -64,6 +66,30 @@ export const usePredictions = () => {
     await loadPredictions()
 
   }
+  const editPrediction = async (id, data) => {
+        try {
+    
+          await updatePrediction(id, data)
+    
+          await loadPredictions()
+    
+        } catch(err) {
+          error.value = err.message
+        }
+      }
+    
+      const removesPrediction = async (id) => {
+        try {
+    
+          await deletePrediction(id)
+    
+          await loadPredictions()
+    
+        } catch(err) {
+          error.value = err.message
+        }
+      }
+  
 
   const loadPredictionsByUser = async (userId) => {
 
@@ -141,7 +167,9 @@ export const usePredictions = () => {
     addPrediction,
     loadPredictionsByUser,
     loadPredictionsByMatch,
-    loadPredictionsByWinner
+    loadPredictionsByWinner,
+    removesPrediction,
+    editPrediction
 
   }
 

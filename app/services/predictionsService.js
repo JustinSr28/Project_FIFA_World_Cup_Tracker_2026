@@ -10,13 +10,12 @@ import {
   where
 } from "firebase/firestore"
 
-import { db } from "~/auth/auth"
-import { db } from "~app/plugins/firebase"
 
 export const getPredictions = async () => {
+  const { $db } = useNuxtApp()
 
   const snapshot = await getDocs(
-    collection(db, "predictions")
+    collection($db, "predictions")
   )
 
   return snapshot.docs.map(document => ({
@@ -27,8 +26,9 @@ export const getPredictions = async () => {
 
 
 export const getPredictionById = async (id) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "predictions", id)
+  const reference = doc($db, "predictions", id)
 
   const snapshot = await getDoc(reference)
 
@@ -44,9 +44,10 @@ export const getPredictionById = async (id) => {
 
 
 export const createPrediction = async (prediction) => {
+  const { $db } = useNuxtApp()
 
   const response = await addDoc(
-    collection(db, "predictions"),
+    collection($db, "predictions"),
     prediction
   )
 
@@ -55,25 +56,28 @@ export const createPrediction = async (prediction) => {
 
 
 export const updatePrediction = async (id, prediction) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "predictions", id)
+  const reference = doc($db, "predictions", id)
 
   await updateDoc(reference, prediction)
 }
 
 
 export const deletePrediction = async (id) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "predictions", id)
+  const reference = doc($db, "predictions", id)
 
   await deleteDoc(reference)
 }
 
 
 export const getPredictionsByUser = async (userId) => {
+  const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "predictions"),
+    collection($db, "predictions"),
     where("userId", "==", userId)
   )
 
@@ -87,9 +91,10 @@ export const getPredictionsByUser = async (userId) => {
 
 
 export const getPredictionsByMatch = async (matchId) => {
+  const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "predictions"),
+    collection($db, "predictions"),
     where("matchId", "==", matchId)
   )
 
@@ -103,9 +108,10 @@ export const getPredictionsByMatch = async (matchId) => {
 
 
 export const getPredictionsByWinner = async (teamId) => {
+  const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "predictions"),
+    collection($db, "predictions"),
     where("predictedWinner", "==", teamId)
   )
 

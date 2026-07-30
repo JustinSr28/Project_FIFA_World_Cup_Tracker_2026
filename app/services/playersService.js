@@ -10,13 +10,13 @@ import {
   where
 } from "firebase/firestore"
 
-import { db } from "~/auth/auth"
-import { db } from "~app/plugins/firebase"
+
 
 export const getPlayers = async () => {
+  const { $db } = useNuxtApp()
 
   const snapshot = await getDocs(
-    collection(db, "players")
+    collection($db, "players")
   )
 
   return snapshot.docs.map(document => ({
@@ -27,8 +27,9 @@ export const getPlayers = async () => {
 
 
 export const getPlayerById = async (id) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "players", id)
+  const reference = doc($db, "players", id)
 
   const snapshot = await getDoc(reference)
 
@@ -44,9 +45,10 @@ export const getPlayerById = async (id) => {
 
 
 export const createPlayer = async (player) => {
+  const { $db } = useNuxtApp()
 
   const response = await addDoc(
-    collection(db, "players"),
+    collection($db, "players"),
     player
   )
 
@@ -55,25 +57,27 @@ export const createPlayer = async (player) => {
 
 
 export const updatePlayer = async (id, player) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "players", id)
+  const reference = doc($db, "players", id)
 
   await updateDoc(reference, player)
 }
 
 
 export const deletePlayer = async (id) => {
-
-  const reference = doc(db, "players", id)
+  const { $db } = useNuxtApp()
+  const reference = doc($db, "players", id)
 
   await deleteDoc(reference)
 }
 
 
 export const getPlayersByTeam = async (teamId) => {
+  const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "players"),
+    collection($db, "players"),
     where("teamId", "==", teamId)
   )
 
@@ -87,9 +91,10 @@ export const getPlayersByTeam = async (teamId) => {
 
 
 export const getPlayersByPosition = async (position) => {
+  const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "players"),
+    collection($db, "players"),
     where("position", "==", position)
   )
 

@@ -6,7 +6,9 @@ import {
   getMatchesByStage,
   getMatchesByStatus,
   getMatchesByCity,
-  getMatchesByTeam
+  getMatchesByTeam,
+  deleteMatch,
+  updateMatch
 } from "~/services/matchesService"
 
 export const useMatches = () => {
@@ -172,6 +174,32 @@ export const useMatches = () => {
 
   }
 
+  
+  const editMatch = async (id, data) => {
+    try {
+
+      await updateMatch(id, data)
+
+      await loadMatches()
+
+    } catch(err) {
+      error.value = err.message
+    }
+  }
+
+  const removeMatch = async (id) => {
+    try {
+
+      await deleteMatch(id)
+
+      await loadMatches()
+
+    } catch(err) {
+      error.value = err.message
+    }
+  }
+
+
   return {
     matches,
     match,
@@ -186,7 +214,9 @@ export const useMatches = () => {
     loadMatchesByStage,
     loadMatchesByStatus,
     loadMatchesByCity,
-    loadMatchesByTeam
+    loadMatchesByTeam,
+    removeMatch,
+    editMatch
   }
 
 }

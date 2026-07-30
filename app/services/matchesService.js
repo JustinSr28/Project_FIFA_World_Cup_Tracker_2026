@@ -10,13 +10,14 @@ import {
   where
 } from "firebase/firestore"
 
-import { db } from "~/auth/auth"
-import { db } from "~app/plugins/firebase"
+
 
 export const getMatches = async () => {
+  
+  const { $db } = useNuxtApp()
 
   const snapshot = await getDocs(
-    collection(db, "matches")
+    collection($db, "matches")
   )
 
   return snapshot.docs.map(document => ({
@@ -27,8 +28,9 @@ export const getMatches = async () => {
 
 
 export const getMatchById = async (id) => {
+   const { $db } = useNuxtApp()
 
-  const reference = doc(db, "matches", id)
+  const reference = doc($db, "matches", id)
 
   const snapshot = await getDoc(reference)
 
@@ -44,9 +46,10 @@ export const getMatchById = async (id) => {
 
 
 export const createMatch = async (match) => {
+   const { $db } = useNuxtApp()
 
   const response = await addDoc(
-    collection(db, "matches"),
+    collection($db, "matches"),
     match
   )
 
@@ -55,25 +58,27 @@ export const createMatch = async (match) => {
 
 
 export const updateMatch = async (id, match) => {
+   const { $db } = useNuxtApp()
 
-  const reference = doc(db, "matches", id)
+  const reference = doc($db, "matches", id)
 
   await updateDoc(reference, match)
 }
 
 
 export const deleteMatch = async (id) => {
+   const { $db } = useNuxtApp()
 
-  const reference = doc(db, "matches", id)
+  const reference = doc($db, "matches", id)
 
   await deleteDoc(reference)
 }
 
 
 export const getMatchesByGroup = async (group) => {
-
+   const { $db } = useNuxtApp()
   const q = query(
-    collection(db, "matches"),
+    collection($db, "matches"),
     where("group", "==", group)
   )
 
@@ -87,9 +92,10 @@ export const getMatchesByGroup = async (group) => {
 
 
 export const getMatchesByStage = async (stage) => {
+   const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "matches"),
+    collection($db, "matches"),
     where("stage", "==", stage)
   )
 
@@ -103,9 +109,10 @@ export const getMatchesByStage = async (stage) => {
 
 
 export const getMatchesByStatus = async (status) => {
+   const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "matches"),
+    collection($db, "matches"),
     where("status", "==", status)
   )
 
@@ -119,9 +126,10 @@ export const getMatchesByStatus = async (status) => {
 
 
 export const getMatchesByCity = async (city) => {
+   const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "matches"),
+    collection($db, "matches"),
     where("city", "==", city)
   )
 
@@ -135,14 +143,15 @@ export const getMatchesByCity = async (city) => {
 
 
 export const getMatchesByTeam = async (teamId) => {
+   const { $db } = useNuxtApp()
 
   const homeQuery = query(
-    collection(db, "matches"),
+    collection($db, "matches"),
     where("homeTeam", "==", teamId)
   )
 
   const awayQuery = query(
-    collection(db, "matches"),
+    collection($db, "matches"),
     where("awayTeam", "==", teamId)
   )
 

@@ -3,6 +3,7 @@ import {
   getDocs,
   getDoc,
   addDoc,
+   setDoc,
   updateDoc,
   deleteDoc,
   doc,
@@ -11,13 +12,12 @@ import {
 } from "firebase/firestore"
 
 
-import { db } from "~app/plugins/firebase"
-
 
 export const getUsers = async () => {
+  const { $db } = useNuxtApp()
 
   const snapshot = await getDocs(
-    collection(db, "users")
+    collection($db, "users")
   )
 
   return snapshot.docs.map(document => ({
@@ -28,8 +28,9 @@ export const getUsers = async () => {
 
 
 export const getUserById = async (id) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "users", id)
+  const reference = doc($db, "users", id)
 
   const snapshot = await getDoc(reference)
 
@@ -46,35 +47,40 @@ export const getUserById = async (id) => {
 
 
 export const createUser = async (user) => {
+  const { $db } = useNuxtApp()
 
   await setDoc(
-    doc(db, "users", user.uid),
+    doc($db, "users", user.uid),
     user
   )
+   console.log("llego a createuser del servve")
 
   return user.uid
 }
 
 export const updateUser = async (id, user) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "users", id)
+  const reference = doc($db, "users", id)
 
   await updateDoc(reference, user)
 }
 
 
 export const deleteUser = async (id) => {
+  const { $db } = useNuxtApp()
 
-  const reference = doc(db, "users", id)
+  const reference = doc($db, "users", id)
 
   await deleteDoc(reference)
 }
 
 
 export const getUserByUid = async (uid) => {
+  const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "users"),
+    collection($db, "users"),
     where("uid", "==", uid)
   )
 
@@ -88,9 +94,10 @@ export const getUserByUid = async (uid) => {
 
 
 export const getUsersByFavoriteTeam = async (teamId) => {
+  const { $db } = useNuxtApp()
 
   const q = query(
-    collection(db, "users"),
+    collection($db, "users"),
     where("favoriteTeam", "==", teamId)
   )
 
