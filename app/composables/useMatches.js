@@ -11,6 +11,8 @@ import {
   updateMatch
 } from "~/services/matchesService"
 
+import { useStandings } from "~/composables/useStandings"
+
 export const useMatches = () => {
 
   const matches = ref([])
@@ -18,6 +20,8 @@ export const useMatches = () => {
 
   const loading = ref(false)
   const error = ref("")
+
+   const { recalculateGroupStandings } = useStandings()
 
   const loadMatches = async () => {
 
@@ -179,6 +183,11 @@ export const useMatches = () => {
     try {
 
       await updateMatch(id, data)
+
+      
+      if (data.status === "Finalizado" && data.group) {
+        await recalculateGroupStandings(data.group)
+      }
 
       await loadMatches()
 
