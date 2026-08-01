@@ -8,7 +8,8 @@ import {
   getMatchesByCity,
   getMatchesByTeam,
   deleteMatch,
-  updateMatch
+  updateMatch,
+  filterMatches,
 } from "~/services/matchesService"
 
 import { useStandings } from "~/composables/useStandings"
@@ -207,6 +208,26 @@ export const useMatches = () => {
       error.value = err.message
     }
   }
+  const loadFilteredMatches = async (filters = {}) => {
+
+    try {
+
+        loading.value = true
+        error.value = ""
+
+        matches.value = await filterMatches(filters)
+
+    } catch (err) {
+
+        error.value = err.message
+
+    } finally {
+
+        loading.value = false
+
+    }
+
+}
 
 
   return {
@@ -225,7 +246,8 @@ export const useMatches = () => {
     loadMatchesByCity,
     loadMatchesByTeam,
     removeMatch,
-    editMatch
+    editMatch,
+    loadFilteredMatches
   }
 
 }

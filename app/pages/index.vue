@@ -1,13 +1,4 @@
-<script setup>
 
-const { loginGoogle } = useAuth()
-
-const login = async () => {
-  await loginGoogle()
-
-  navigateTo("/test")
-}
-</script>
 <template>
 
 <div class="login-page">
@@ -40,6 +31,14 @@ const login = async () => {
 </div>
 
 </template>
+
+<script setup>
+const { loginGoogle } = useAuth()
+const login = async () => {
+  await loginGoogle()
+  navigateTo("/test1")
+}
+</script>
 
 
 <style scoped>

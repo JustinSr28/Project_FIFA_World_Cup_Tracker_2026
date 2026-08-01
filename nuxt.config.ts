@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/eslint','@pinia/nuxt'],
   runtimeConfig: {
+    restCountriesApiKey: process.env.REST_COUNTRIES_API_KEY,
     public: {
       firebaseApiKey: '',
       firebaseAuthDomain: '',

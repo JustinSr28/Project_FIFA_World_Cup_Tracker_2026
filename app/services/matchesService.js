@@ -75,56 +75,6 @@ export const deleteMatch = async (id) => {
 }
 
 
-export const getMatchesByGroup = async (group) => {
-   const { $db } = useNuxtApp()
-  const q = query(
-    collection($db, "matches"),
-    where("group", "==", group)
-  )
-
-  const snapshot = await getDocs(q)
-
-  return snapshot.docs.map(document => ({
-    id: document.id,
-    ...document.data()
-  }))
-}
-
-
-export const getMatchesByStage = async (stage) => {
-   const { $db } = useNuxtApp()
-
-  const q = query(
-    collection($db, "matches"),
-    where("stage", "==", stage)
-  )
-
-  const snapshot = await getDocs(q)
-
-  return snapshot.docs.map(document => ({
-    id: document.id,
-    ...document.data()
-  }))
-}
-
-
-export const getMatchesByStatus = async (status) => {
-   const { $db } = useNuxtApp()
-
-  const q = query(
-    collection($db, "matches"),
-    where("status", "==", status)
-  )
-
-  const snapshot = await getDocs(q)
-
-  return snapshot.docs.map(document => ({
-    id: document.id,
-    ...document.data()
-  }))
-}
-
-
 export const getMatchesByCity = async (city) => {
    const { $db } = useNuxtApp()
 
@@ -167,4 +117,88 @@ export const getMatchesByTeam = async (teamId) => {
     id: document.id,
     ...document.data()
   }))
+}
+
+//---------FILTERS
+
+export const getMatchesByGroup = async (group) => {
+   const { $db } = useNuxtApp()
+  const q = query(
+    collection($db, "matches"),
+    where("group", "==", group)
+  )
+
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(document => ({
+    id: document.id,
+    ...document.data()
+  }))
+}
+
+export const getMatchesByStage = async (stage) => {
+   const { $db } = useNuxtApp()
+
+  const q = query(
+    collection($db, "matches"),
+    where("stage", "==", stage)
+  )
+
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(document => ({
+    id: document.id,
+    ...document.data()
+  }))
+}
+
+export const getMatchesByStatus = async (status) => {
+   const { $db } = useNuxtApp()
+
+  const q = query(
+    collection($db, "matches"),
+    where("status", "==", status)
+  )
+
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(document => ({
+    id: document.id,
+    ...document.data()
+  }))
+}
+
+export async function filterMatches(filters = {}) {
+  const { $db } = useNuxtApp()
+
+    let q = collection($db, "matches")
+
+    const constraints = []
+
+    if (filters.group) {
+        constraints.push(where("group", "==", filters.group))
+    }
+
+    if (filters.stage) {
+        constraints.push(where("stage", "==", filters.stage))
+    }
+
+    if (filters.status) {
+        constraints.push(where("status", "==", filters.status))
+    }
+
+    if (filters.date) {
+        constraints.push(where("kickoff", "==", filters.date))
+    }
+
+    if (constraints.length > 0) {
+        q = query(q, ...constraints)
+    }
+
+    const snapshot = await getDocs(q)
+
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }))
 }

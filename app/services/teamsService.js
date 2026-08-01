@@ -73,12 +73,12 @@ export const deleteTeam = async (id) => {
 }
 
 
-export const getTeamsByGroup = async (group) => {
+export const getTeamsByConfederation = async (confederation) => {
   const { $db } = useNuxtApp()
 
   const q = query(
     collection($db, "teams"),
-    where("group", "==", group)
+    where("confederation", "==", confederation)
   )
 
   const snapshot = await getDocs(q)
@@ -89,13 +89,14 @@ export const getTeamsByGroup = async (group) => {
   }))
 }
 
+//FILTERS----------
 
-export const getTeamsByConfederation = async (confederation) => {
+export const getTeamsByGroup = async (group) => {
   const { $db } = useNuxtApp()
 
   const q = query(
     collection($db, "teams"),
-    where("confederation", "==", confederation)
+    where("group", "==", group)
   )
 
   const snapshot = await getDocs(q)
