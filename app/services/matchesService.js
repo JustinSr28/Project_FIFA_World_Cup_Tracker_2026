@@ -202,3 +202,63 @@ export async function filterMatches(filters = {}) {
         ...doc.data()
     }))
 }
+
+//stats
+//total de part jugadosd
+export const getPlayedMatches = async () => {
+
+  const matches = await getMatches()
+  console.log(matches)
+
+  return matches.filter(match =>
+    match.status === "Finalizado"
+  ).length
+
+}
+
+//promedio de goles
+export const getAverageGoals = async () => {
+
+  const matches = await getMatches()
+
+  const played = matches.filter(match =>
+    match.status === "Finalizado"
+  )
+  console.log("jugados:",played)
+
+  if (!played.length) {
+    return 0
+  }
+
+  const totalGoals = played.reduce((total, match) => {
+
+    return total + match.homeScore + match.awayScore
+
+  }, 0)
+  console.log("jugados:",totalGoals)
+  console.log("hola")
+
+  return (totalGoals / played.length).toFixed(2)
+
+}
+
+//porcentaje de victorias
+export const getWinPercentage = async () => {
+
+  const matches = await getMatches()
+
+  const played = matches.filter(match =>
+    match.status === "Finalizado"
+  )
+
+  if (!played.length) {
+    return 0
+  }
+
+  const wins = played.filter(match =>
+    match.homeScore !== match.awayScore
+  ).length
+
+  return ((wins / played.length) * 100).toFixed(2)
+
+}

@@ -36,7 +36,7 @@
 const { loginGoogle } = useAuth()
 const login = async () => {
   await loginGoogle()
-  navigateTo("/test1")
+  navigateTo("/test2")
 }
 </script>
 

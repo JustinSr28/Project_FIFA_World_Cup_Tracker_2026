@@ -106,3 +106,32 @@ export const getStandingByTeam = async (teamId) => {
     ...document.data()
   }))
 }
+
+//stats
+export const getMostGoalsTeam = async () => {
+
+  const standings = await getStandings()
+
+  if (!standings.length) {
+    return null
+  }
+
+  return standings.sort(
+    (a, b) => b.goalsFor - a.goalsFor
+  )[0]
+
+}
+
+export const getLeastGoalTeam = async () => {
+
+  const standings = await getStandings()
+
+  if (!standings.length) {
+    return null
+  }
+
+  return standings.sort(
+    (a, b) => a.goalsAgainst - b.goalsAgainst
+  )[0]
+
+}

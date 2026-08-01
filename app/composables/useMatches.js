@@ -10,6 +10,9 @@ import {
   deleteMatch,
   updateMatch,
   filterMatches,
+  getPlayedMatches,
+  getWinPercentage ,
+  getAverageGoals
 } from "~/services/matchesService"
 
 import { useStandings } from "~/composables/useStandings"
@@ -18,6 +21,8 @@ export const useMatches = () => {
 
   const matches = ref([])
   const match = ref(null)
+
+  const playedMatches = ref(0)
 
   const loading = ref(false)
   const error = ref("")
@@ -229,11 +234,84 @@ export const useMatches = () => {
 
 }
 
+//stats
+
+
+const loadPlayedMatches = async () => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    playedMatches.value = await getPlayedMatches()
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
+const averageGoals = ref(0)
+
+const loadAverageGoals = async () => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    averageGoals.value = await getAverageGoals()
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
+const winPercentage = ref(0)
+
+const loadWinPercentage = async () => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    winPercentage.value = await getWinPercentage()
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
 
   return {
     matches,
     match,
 
+    playedMatches,
+  averageGoals,
+  winPercentage,
+    
     loading,
     error,
 
@@ -247,7 +325,10 @@ export const useMatches = () => {
     loadMatchesByTeam,
     removeMatch,
     editMatch,
-    loadFilteredMatches
+    loadFilteredMatches,
+    loadPlayedMatches,
+    loadAverageGoals,
+    loadWinPercentage
   }
 
 }

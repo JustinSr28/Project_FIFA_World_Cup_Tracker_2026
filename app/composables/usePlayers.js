@@ -5,7 +5,8 @@ import {
   getPlayersByTeam,
   getPlayersByPosition,
   deletePlayer,
-  updatePlayer
+  updatePlayer,
+  getTopScorer
 } from "~/services/playersService"
 
 export const usePlayers = () => {
@@ -131,6 +132,28 @@ export const usePlayers = () => {
 
   }
 
+  //stats
+const loadTopScorer = async () => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    player.value = await getTopScorer()
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
   return {
 
     players,
@@ -145,7 +168,8 @@ export const usePlayers = () => {
     loadPlayersByTeam,
     loadPlayersByPosition,
     removePlayer,
-    editPlayer
+    editPlayer,
+    loadTopScorer
 
   }
 

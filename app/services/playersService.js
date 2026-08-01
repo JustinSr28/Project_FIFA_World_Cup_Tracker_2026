@@ -105,3 +105,12 @@ export const getPlayersByPosition = async (position) => {
     ...document.data()
   }))
 }
+
+//STATS
+export const getTopScorer = async () => {
+
+  const players = await getPlayers()
+
+  return players.sort((a, b) => b.goal - a.goal)[0]
+
+}
