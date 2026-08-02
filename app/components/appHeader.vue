@@ -20,11 +20,11 @@
     </NuxtLink>
 
     <NuxtLink to="/matches">
-      Partidos
+      Fase de grupos
     </NuxtLink>
 
     <NuxtLink to="/groups">
-      Fase de grupos
+      Standings
     </NuxtLink>
 
     <NuxtLink to="/brackets">
@@ -37,6 +37,10 @@
 
     <NuxtLink to="/statistics">
       Estadísticas
+    </NuxtLink>
+
+    <NuxtLink to="/test">
+      All matches
     </NuxtLink>
 
   </nav>
@@ -130,8 +134,7 @@ const {
   user,
   logout
 } = useAuth()
-console.log("Usuario header:", user.value)
-console.log("Foto:", user.value?.photoURL)
+
 
 </script>
 

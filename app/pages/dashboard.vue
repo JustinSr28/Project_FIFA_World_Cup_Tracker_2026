@@ -2,9 +2,16 @@
 
   <div class="dashboard-container">
 
+
     <h1 class="title">
-      DASHBOARD MUNDIAL 2026
+      ⚽ FIFA WORLD CUP 2026
     </h1>
+
+    <p class="subtitle">
+      Panel de control del torneo
+    </p>
+
+
 
     <div
       v-if="loading"
@@ -13,6 +20,8 @@
       Cargando indicadores...
     </div>
 
+
+
     <div
       v-else-if="error"
       class="message error"
@@ -20,78 +29,177 @@
       {{ error }}
     </div>
 
+
+
     <div
       v-else
-      class="dashboard-grid"
+      class="dashboard"
     >
 
-      <div class="card">
 
-        <h3>🏟 Partidos jugados</h3>
 
-        <p class="value">
-          {{ playedMatches }}
-        </p>
+      <!-- Estado del torneo -->
+
+      <section class="main-card">
+
+
+        <h2>
+          🏟 Estado del torneo
+        </h2>
+
+
+        <div class="stats">
+
+
+          <div class="stat-item">
+
+            <span>
+              Partidos jugados
+            </span>
+
+            <strong>
+              {{ playedMatches }}
+            </strong>
+
+          </div>
+
+
+
+          <div class="stat-item">
+
+            <span>
+              Partidos pendientes
+            </span>
+
+            <strong>
+              {{ pendingMatches }}
+            </strong>
+
+          </div>
+
+
+
+          <div class="stat-item">
+
+            <span>
+              Goles anotados
+            </span>
+
+            <strong>
+              {{ totalGoals }}
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+
+
+
+      <!-- Indicadores secundarios -->
+
+      <div class="cards-grid">
+
+
+
+        <div class="card">
+
+
+          <div class="icon">
+            🏆
+          </div>
+
+
+          <h3>
+            Selecciones clasificadas
+          </h3>
+
+
+          <strong>
+            {{ qualifiedTeams }}
+          </strong>
+
+
+        </div>
+
+
+
+
+
+        <div class="card">
+
+
+          <div class="icon">
+            🎯
+          </div>
+
+
+          <h3>
+            Predicciones realizadas
+          </h3>
+
+
+          <strong>
+            {{ predictionsCount }}
+          </strong>
+
+
+        </div>
+
+
+
 
       </div>
 
-      <div class="card">
 
-        <h3>⏳ Partidos pendientes</h3>
 
-        <p class="value">
-          {{ pendingMatches }}
-        </p>
 
-      </div>
 
-      <div class="card">
 
-        <h3>⚽ Goles anotados</h3>
+      <!-- Usuario destacado -->
 
-        <p class="value">
-          {{ totalGoals }}
-        </p>
 
-      </div>
+      <section class="user-card">
 
-      <div class="card">
 
-        <h3>🏆 Selecciones clasificadas</h3>
+        <div class="user-icon">
+          👤
+        </div>
 
-        <p class="value">
-          {{ qualifiedTeams }}
-        </p>
 
-      </div>
+        <div>
 
-      <div class="card">
+          <h2>
+            Usuario con mayor puntaje
+          </h2>
 
-        <h3>👤 Usuario con mayor puntaje</h3>
 
-        <p class="value">
-          {{ user?.name }}
-        </p>
+          <p>
+            {{ user?.name }}
+          </p>
 
-        <span>
-          {{ user?.points }} puntos
-        </span>
 
-      </div>
+          <span>
+            ⭐ {{ user?.points }} puntos
+          </span>
 
-      <div class="card">
+        </div>
 
-        <h3>🎯 Predicciones realizadas</h3>
 
-        <p class="value">
-          {{ predictionsCount }}
-        </p>
+      </section>
 
-      </div>
+
 
     </div>
 
+
   </div>
+
 
 </template>
 
@@ -178,9 +286,6 @@ onMounted(async () => {
   await loadQualifiedTeams("Dieciseisavos")
 
   await loadTopUser()
-console.log("Usuario autenticado:", authUser.value)
-console.log("UID del usuario:", authUser.value.uid)
-
 await loadPredictionsCountByUser(authUser.value.uid)
 
 
@@ -189,101 +294,389 @@ await loadPredictionsCountByUser(authUser.value.uid)
 </script>
 <style scoped>
 
-.dashboard-container{
 
-  max-width:1100px;
+.dashboard-container {
+
+  max-width:1200px;
 
   margin:auto;
 
-  padding:40px 20px;
+  padding:40px 25px;
 
 }
 
-.title{
+
+
+/* Título */
+
+.title {
 
   text-align:center;
 
-  font-size:2rem;
+  color:#0f2a4a;
 
-  font-weight:bold;
+  font-size:2.4rem;
 
-  margin-bottom:35px;
+  font-weight:800;
 
-  color:#222;
+  margin-bottom:5px;
 
 }
 
-.dashboard-grid{
+
+
+.subtitle {
+
+  text-align:center;
+
+  color:#64748b;
+
+  margin-bottom:40px;
+
+  font-size:1.1rem;
+
+}
+
+
+
+/* Layout */
+
+.dashboard {
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:25px;
+
+}
+
+
+
+/* Tarjeta principal */
+
+.main-card {
+
+
+  background:white;
+
+  border-radius:20px;
+
+  padding:35px;
+
+  border:1px solid #dbe3ec;
+
+  box-shadow:
+  0 8px 20px rgba(15,42,74,.10);
+
+
+}
+
+
+
+.main-card h2 {
+
+  color:#0f2a4a;
+
+  margin-bottom:30px;
+
+  font-size:1.3rem;
+
+}
+
+
+
+
+
+/* Estadísticas */
+
+.stats {
 
   display:grid;
 
   grid-template-columns:
-  repeat(auto-fit,minmax(250px,1fr));
+  repeat(3,1fr);
 
   gap:20px;
 
 }
 
-.card{
 
-  background:white;
 
-  border-radius:12px;
+.stat-item {
+
+
+  background:#f8fafc;
+
+  border-radius:15px;
 
   padding:25px;
 
   text-align:center;
 
-  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  border:1px solid #e2e8f0;
 
-  transition:.2s;
-
-}
-
-.card:hover{
-
-  transform:translateY(-3px);
 
 }
 
-.card h3{
 
-  margin-bottom:15px;
 
-  color:#1565c0;
+.stat-item span {
 
-}
+  display:block;
 
-.value{
+  color:#64748b;
 
-  font-size:2rem;
+  font-size:.95rem;
 
-  font-weight:bold;
-
-  margin-bottom:8px;
+  margin-bottom:12px;
 
 }
 
-.card span{
 
-  color:#666;
+
+.stat-item strong {
+
+  color:#0f2a4a;
+
+  font-size:2.5rem;
+
+  font-weight:800;
 
 }
 
-.message{
+
+
+
+
+/* Cards pequeñas */
+
+.cards-grid {
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(2,1fr);
+
+  gap:25px;
+
+}
+
+
+
+.card {
+
+
+  background:white;
+
+  border-radius:18px;
+
+  padding:30px;
 
   text-align:center;
 
-  font-size:18px;
+  border:1px solid #dbe3ec;
 
-  padding:40px;
+  box-shadow:
+  0 6px 18px rgba(15,42,74,.08);
+
+  transition:.3s;
+
+}
+
+
+
+.card:hover {
+
+  transform:translateY(-5px);
+
+  box-shadow:
+  0 12px 25px rgba(15,42,74,.15);
 
 }
 
-.error{
 
-  color:red;
+
+.icon {
+
+  font-size:2rem;
+
+  margin-bottom:15px;
 
 }
+
+
+
+.card h3 {
+
+  color:#475569;
+
+  font-size:1rem;
+
+  margin-bottom:15px;
+
+}
+
+
+
+.card strong {
+
+  color:#0f2a4a;
+
+  font-size:2.5rem;
+
+}
+
+
+
+
+
+/* Usuario */
+
+
+.user-card {
+
+
+  display:flex;
+
+  align-items:center;
+
+  gap:25px;
+
+
+  background:#0f2a4a;
+
+  color:white;
+
+
+  border-radius:20px;
+
+  padding:30px;
+
+
+}
+
+
+
+.user-icon {
+
+  font-size:3rem;
+
+  background:white;
+
+  border-radius:50%;
+
+  width:70px;
+
+  height:70px;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+}
+
+
+
+.user-card h2 {
+
+  margin:0 0 10px;
+
+  font-size:1.2rem;
+
+}
+
+
+
+.user-card p {
+
+  margin:0;
+
+  font-size:1.4rem;
+
+  font-weight:700;
+
+}
+
+
+
+.user-card span {
+
+  color:#bfdbfe;
+
+}
+
+
+
+
+
+/* Mensajes */
+
+.message {
+
+  background:#f8fafc;
+
+  border:1px solid #dbe3ec;
+
+  padding:25px;
+
+  border-radius:15px;
+
+  text-align:center;
+
+  color:#475569;
+
+}
+
+
+
+.error {
+
+  background:#fef2f2;
+
+  color:#b91c1c;
+
+  border-color:#fecaca;
+
+}
+
+
+
+
+/* Responsive */
+
+@media(max-width:768px){
+
+
+  .stats {
+
+    grid-template-columns:1fr;
+
+  }
+
+
+
+  .cards-grid {
+
+    grid-template-columns:1fr;
+
+  }
+
+
+
+  .user-card {
+
+    flex-direction:column;
+
+    text-align:center;
+
+  }
+
+
+}
+
+
 
 </style>
