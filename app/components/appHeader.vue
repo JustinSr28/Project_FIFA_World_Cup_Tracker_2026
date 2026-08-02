@@ -1,108 +1,141 @@
 <template>
-  <header class="app-header">
 
-    <NuxtLink
-      to="/"
-      class="logo"
-    >
-      ⚽ FIFA World Cup 2026
+<header class="app-header">
+
+  <NuxtLink
+    to="/dashboard"
+    class="logo"
+  >
+    ⚽ FIFA World Cup 2026
+  </NuxtLink>
+
+  <nav>
+
+    <NuxtLink to="/dashboard">
+      Dashboard
     </NuxtLink>
 
-    <nav>
+    <NuxtLink to="/teams">
+      Equipos
+    </NuxtLink>
 
-      <NuxtLink to="/">
-        Dashboard
-      </NuxtLink>
+    <NuxtLink to="/matches">
+      Partidos
+    </NuxtLink>
 
-      <NuxtLink to="/teams">
-        Equipos
-      </NuxtLink>
+    <NuxtLink to="/groups">
+      Fase de grupos
+    </NuxtLink>
 
-      <NuxtLink to="/matches">
-        Partidos
-      </NuxtLink>
+    <NuxtLink to="/brackets">
+      Brackets
+    </NuxtLink>
 
-      <NuxtLink to="/groups">
-        Fase de grupos
-      </NuxtLink>
+    <NuxtLink to="/predictions">
+      Predicciones
+    </NuxtLink>
 
-      <NuxtLink to="/brackets">
-        Brackets
-      </NuxtLink>
+    <NuxtLink to="/statistics">
+      Estadísticas
+    </NuxtLink>
 
-      <NuxtLink to="/predictions">
-        Predicciones
-      </NuxtLink>
+  </nav>
 
-      <NuxtLink to="/statistics">
-        Estadísticas
-      </NuxtLink>
+  <div class="profile">
 
-     
-      
+    <button
+      class="profile-button"
+      @click="showMenu = !showMenu"
+    >
 
-    </nav>
-
-    <div class="profile">
-
-      <button
-        class="profile-button"
-        @click="showMenu = !showMenu"
-      >
-
-        <img
-          :src="user.photoURL"
-          class="avatar"
-        >
-
-        <div class="info">
-          <span>{{ user.displayName }}</span>
-        </div>
-
-        ▼
-
-      </button>
-
+    <img v-if="user?.photoURL" :src="user.photoURL" :alt="user.displayName" class="avatar" >
+  
       <div
-        v-if="showMenu"
-        class="dropdown"
+        v-else
+        class="avatar-placeholder"
       >
+        👤
+      </div>
 
-        <NuxtLink to="/profile">
-          ✏️ Editar perfil
-        </NuxtLink>
+      <div class="info">
 
-        <NuxtLink to="/favorites">
-          ❤️ Favoritos
-        </NuxtLink>
-
-        <button @click="logout">
-          🚪 Cerrar sesión
-        </button>
+        <span class="name">
+          {{ user?.displayName || "Usuario" }}
+        </span>
 
       </div>
 
+      <span class="arrow">
+        ▼
+      </span>
+
+    </button>
+
+    <div
+      v-if="showMenu"
+      class="dropdown"
+    >
+
+      <div class="dropdown-user">
+
+        <img
+          v-if="user?.photoURL"
+          :src="user.photoURL"
+          class="dropdown-avatar"
+        >
+
+        <div>
+
+          <strong>
+            {{ user?.displayName }}
+          </strong>
+
+          <p>
+            {{ user?.email }}
+          </p>
+
+        </div>
+
+      </div>
+
+      <hr>
+
+      <NuxtLink to="/profile">
+        👤 Mi perfil
+      </NuxtLink>
+
+      <NuxtLink to="/favorites">
+        ⭐ Favoritos
+      </NuxtLink>
+
+      <button @click="logout">
+        🚪 Cerrar sesión
+      </button>
+
     </div>
 
-  </header>
+  </div>
+
+</header>
+
 </template>
 
 <script setup>
 
+import { ref } from "vue"
+
 const showMenu = ref(false)
 
-const favoritesCount = ref(4)
-
-const user = {
-  displayName: "Sheyla",
-  photoURL: "https://i.pravatar.cc/100"
-}
-
-const logout = () => {
-  console.log("Cerrar sesión")
-}
+const {
+  user,
+  logout
+} = useAuth()
+console.log("Usuario header:", user.value)
+console.log("Foto:", user.value?.photoURL)
 
 </script>
+
+
 
 <style scoped>
 .app-header {
@@ -209,18 +242,18 @@ nav{
     cursor:pointer;
 
 }
+.avatar {
 
-.avatar{
-
-    width:42px;
-    height:42px;
+    width:60px;
+    height:60px;
 
     border-radius:50%;
 
-    border:2px solid #3ddc84;
+    object-fit:cover;
+
+    border:3px solid #3ddc84;
 
 }
-
 .info{
 
     display:flex;

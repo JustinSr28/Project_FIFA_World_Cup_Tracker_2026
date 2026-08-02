@@ -33,10 +33,13 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: "auth"
+})
 const { loginGoogle } = useAuth()
 const login = async () => {
   await loginGoogle()
-  navigateTo("/test3")
+  navigateTo("/dashboard")
 }
 </script>
 
