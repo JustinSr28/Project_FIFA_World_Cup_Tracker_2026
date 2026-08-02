@@ -12,7 +12,10 @@ import {
   filterMatches,
   getPlayedMatches,
   getWinPercentage ,
-  getAverageGoals
+  getAverageGoals,
+  getPendingMatches,
+  getTotalGoals,
+  getQualifiedTeams
 } from "~/services/matchesService"
 
 import { useStandings } from "~/composables/useStandings"
@@ -23,6 +26,12 @@ export const useMatches = () => {
   const match = ref(null)
 
   const playedMatches = ref(0)
+
+  const pendingMatches = ref(0)
+
+const totalGoals = ref(0)
+
+const qualifiedTeams = ref(0)
 
   const loading = ref(false)
   const error = ref("")
@@ -340,12 +349,83 @@ const loadWinPercentage = async () => {
 
   }
 
+//DASHBOARD
+
+
+const loadPendingMatches = async () => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    pendingMatches.value = await getPendingMatches()
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
+const loadTotalGoals = async () => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    totalGoals.value = await getTotalGoals()
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
+const loadQualifiedTeams = async (previousStage) => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    qualifiedTeams.value = await getQualifiedTeams(previousStage)
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
   return {
     matches,
     match,
     playedMatches,
     averageGoals,
     winPercentage,
+  pendingMatches,
+  totalGoals,
+  qualifiedTeams,
+    
+
     loading,
     error,
     loadMatches,
@@ -362,7 +442,12 @@ const loadWinPercentage = async () => {
     loadPlayedMatches,
     loadAverageGoals,
     loadWinPercentage,
-    isGroupStageComplete
+    isGroupStageComplete,
+
+     loadPendingMatches,
+  loadTotalGoals,
+  loadQualifiedTeams,
+
   }
 
 }

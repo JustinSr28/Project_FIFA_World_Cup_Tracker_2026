@@ -108,3 +108,18 @@ export const getUsersByFavoriteTeam = async (teamId) => {
     ...document.data()
   }))
 }
+
+//DASBOARD
+export const getTopUser = async () => {
+
+  const users = await getUsers()
+
+  if (!users.length) {
+    return null
+  }
+
+  return users.sort(
+    (a, b) => b.points - a.points
+  )[0]
+
+}

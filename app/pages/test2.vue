@@ -33,7 +33,7 @@
                 <h3>Selección con más goles</h3>
 
                 <p class="value">
-                    {{ mostGoalsTeam?.teamId }}
+                    {{ mostGoalsTeam?.team?.name}}
                 </p>
 
                 <span>{{ mostGoalsTeam?.goalsFor }} goles</span>
@@ -45,7 +45,7 @@
                 <h3>Selección menos goleada</h3>
 
                 <p class="value">
-                    {{ leastConcededTeam?.teamId }}
+                    {{ leastConcededTeam?.team?.name }}
                 </p>
 
                 <span>{{ leastConcededTeam?.goalsAgainst }} recibidos</span>

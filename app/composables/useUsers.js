@@ -4,7 +4,8 @@ import {
   getUserById,
   getUserByUid,
   getUsersByFavoriteTeam,
-  updateUser
+  updateUser,
+  getTopUser
 } from "~/services/usersService"
 
 export const useUsers = () => {
@@ -123,6 +124,28 @@ export const useUsers = () => {
 
   }
 
+  //DASHBOARD
+  const loadTopUser = async () => {
+
+  try {
+
+    loading.value = true
+    error.value = ""
+
+    user.value = await getTopUser()
+
+  } catch (err) {
+
+    error.value = err.message
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
   return {
 
     users,
@@ -136,7 +159,8 @@ export const useUsers = () => {
     addUser,
     loadUserByUid,
     loadUsersByFavoriteTeam,
-    editUser
+    editUser,
+    loadTopUser
 
   }
 

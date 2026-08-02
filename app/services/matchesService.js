@@ -262,3 +262,39 @@ export const getWinPercentage = async () => {
   return ((wins / played.length) * 100).toFixed(2)
 
 }
+
+//DASHBOARD
+export const getPendingMatches = async () => {
+
+  const matches = await getMatches()
+
+  return matches.filter(match =>
+    match.status === "Programado"
+  ).length
+
+}
+
+export const getTotalGoals = async () => {
+
+  const matches = await getMatches()
+
+  return matches
+    .filter(match => match.status === "Finalizado")
+    .reduce((total, match) => {
+
+      return total + match.homeScore + match.awayScore
+
+    }, 0)
+
+}
+
+export const getQualifiedTeams = async (previousStage) => {
+
+  const matches = await getMatches()
+
+  return matches.filter(match =>
+    match.stage === previousStage &&
+    match.status === "Finalizado"
+  ).length
+
+}

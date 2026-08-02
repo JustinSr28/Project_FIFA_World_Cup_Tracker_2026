@@ -74,6 +74,7 @@ export const deletePrediction = async (id) => {
 
 
 export const getPredictionsByUser = async (userId) => {
+
   const { $db } = useNuxtApp()
 
   const q = query(
@@ -87,9 +88,8 @@ export const getPredictionsByUser = async (userId) => {
     id: document.id,
     ...document.data()
   }))
+
 }
-
-
 export const getPredictionsByMatch = async (matchId) => {
   const { $db } = useNuxtApp()
 
@@ -121,4 +121,13 @@ export const getPredictionsByWinner = async (teamId) => {
     id: document.id,
     ...document.data()
   }))
+}
+
+//DASHBOARD
+export const getPredictionsCountByUser = async (userId) => {
+
+  const predictions = await getPredictionsByUser(userId)
+
+  return predictions.length
+
 }

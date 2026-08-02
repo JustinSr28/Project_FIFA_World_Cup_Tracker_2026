@@ -2,11 +2,11 @@ import {
   getPredictions,
   createPrediction,
   getPredictionById,
-  getPredictionsByUser,
   getPredictionsByMatch,
   getPredictionsByWinner,
   deletePrediction,
-  updatePrediction
+  updatePrediction,
+  getPredictionsCountByUser
 } from "~/services/predictionsService"
 
 export const usePredictions = () => {
@@ -14,6 +14,7 @@ export const usePredictions = () => {
   const predictions = ref([])
   const prediction = ref(null)
 
+  const predictionsCount = ref(0)
   const loading = ref(false)
   const error = ref("")
 
@@ -91,26 +92,7 @@ export const usePredictions = () => {
       }
   
 
-  const loadPredictionsByUser = async (userId) => {
-
-    try {
-
-      loading.value = true
-      error.value = ""
-
-      predictions.value = await getPredictionsByUser(userId)
-
-    } catch (err) {
-
-      error.value = err.message
-
-    } finally {
-
-      loading.value = false
-
-    }
-
-  }
+  
 
   const loadPredictionsByMatch = async (matchId) => {
 
@@ -154,10 +136,34 @@ export const usePredictions = () => {
 
   }
 
+  //DASBOARD
+ 
+const loadPredictionsCountByUser = async (userId) => {
+
+    try {
+
+      loading.value = true
+      error.value = ""
+
+      predictionsCount.value = await getPredictionsCountByUser(userId)
+        console.log("Cantidad de predicciones:", predictionsCount.value)
+
+    } catch (err) {
+
+      error.value = err.message
+
+    } finally {
+
+      loading.value = false
+
+    }
+
+  }
   return {
 
     predictions,
     prediction,
+    predictionsCount,
 
     loading,
     error,
@@ -165,11 +171,11 @@ export const usePredictions = () => {
     loadPredictions,
     loadPrediction,
     addPrediction,
-    loadPredictionsByUser,
     loadPredictionsByMatch,
     loadPredictionsByWinner,
     removesPrediction,
-    editPrediction
+    editPrediction,
+    loadPredictionsCountByUser
 
   }
 

@@ -9,7 +9,7 @@ import {
   query,
   where
 } from "firebase/firestore"
-
+import { getTeamById } from "~/services/teamsService"
 
 
 export const getStandings = async () => {
@@ -116,12 +116,18 @@ export const getMostGoalsTeam = async () => {
     return null
   }
 
-  return standings.sort(
+  const standing = standings.sort(
     (a, b) => b.goalsFor - a.goalsFor
   )[0]
 
-}
+  const team = await getTeamById(standing.teamId)
 
+  return {
+    ...standing,
+    team
+  }
+
+}
 export const getLeastGoalTeam = async () => {
 
   const standings = await getStandings()
@@ -130,8 +136,15 @@ export const getLeastGoalTeam = async () => {
     return null
   }
 
-  return standings.sort(
+  const standing = standings.sort(
     (a, b) => a.goalsAgainst - b.goalsAgainst
   )[0]
+
+  const team = await getTeamById(standing.teamId)
+
+  return {
+    ...standing,
+    team
+  }
 
 }
