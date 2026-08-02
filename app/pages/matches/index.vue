@@ -3,12 +3,13 @@
 
     <div class="header">
       <h1>Partidos</h1>
-      <button @click="loadMatches" class="btn-refresh">Actualizar</button>
+      <button @click="loadMatchesByStage('Fase de grupos')" class="btn-refresh">Actualizar</button>
     </div>
 
     <!-- Formulario de creación -->
     <form @submit.prevent="handleCreate" class="match-form">
       <h2>Nuevo partido</h2>
+
 
       <div class="form-row">
         <select v-model="form.homeTeam" required>
@@ -27,35 +28,24 @@
       </div>
 
       <div class="form-row">
-        <select v-if="form.stage === 'Fase de grupos'" v-model="form.group" required>
+        <select v-model="form.group" required>
           <option value="" disabled>Grupo</option>
           <option v-for="g in groups" :key="g" :value="g">Grupo {{ g }}</option>
         </select>
+      </div>
 
-        <select v-model="form.stage" required>
-          <option value="" disabled>Fase</option>
-          <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
-        </select>
+      <div class="form-row">
+        <input v-model="form.stadium" placeholder="Estadio" />
+        <input v-model="form.city" placeholder="Ciudad" />
       </div>
 
       <div class="form-row">
         <input v-model="form.kickoff" type="datetime-local" />
-        <select v-model="form.status">
-          <option value="Programado">Programado</option>
-          <option value="En Vivo">En Vivo</option>
-          <option value="Finalizado">Finalizado</option>
-        </select>
-      </div>
-
-      <div class="form-row">
-        <input v-model.number="form.homeScore" type="number" min="0" placeholder="Goles local" />
-        <input v-model.number="form.awayScore" type="number" min="0" placeholder="Goles visitante" />
       </div>
 
       <button type="submit" class="btn-primary">Crear partido</button>
     </form>
 
-    <!-- Lista de partidos -->
     <div class="matches-list">
       <h2>Partidos registrados</h2>
 
@@ -77,20 +67,15 @@
           <span class="badge">{{ m.status }}</span>
         </div>
         <div class="match-meta">
-          {{ m.group ? `Grupo ${m.group}` : m.stage }} · {{ m.stadium }}, {{ m.city }}
+          Grupo {{ m.group }} · {{ m.stadium }}, {{ m.city }}
         </div>
 
         <div class="match-actions">
-          <select :value="m.status" @change="handleStatusChange(m, $event.target.value)">
-            <option value="Programado">Programado</option>
-            <option value="En Vivo">En Vivo</option>
-            <option value="Finalizado">Finalizado</option>
-          </select>
+          <NuxtLink :to="`/matches/${m.id}`" class="btn-primary">Editar</NuxtLink>
           <button @click="removeMatch(m.id)" class="btn-danger">Eliminar</button>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -99,33 +84,28 @@ import { ref, onMounted } from 'vue'
 import { useMatches } from '~/composables/useMatches'
 import { useTeams } from '~/composables/useTeams'
 
-const { matches, loading, error, loadMatches, addMatch, editMatch, removeMatch } = useMatches()
+
+
+const { matches, loading, error, addMatch, removeMatch, loadMatchesByStage } = useMatches()
 const { teams, loadTeams } = useTeams()
+
 
 const emptyForm = () => ({
   homeTeam: '',
   awayTeam: '',
   group: '',
-  stage: '',
+  stage: 'Fase de grupos',
   stadium: '',
   city: '',
   kickoff: '',
   status: 'Programado',
   homeScore: null,
-  awayScore: null
+  awayScore: null,
+  winner: null
 })
 
 const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
 
-const stages = [
-  'Fase de grupos',
-  'Dieciseisavos',
-  'Octavos',
-  'Cuartos',
-  'Semifinal',
-  'Tercer lugar',
-  'Final'
-]
 
 const form = ref(emptyForm())
 
@@ -135,10 +115,6 @@ const handleCreate = async () => {
 }
 
 
-const handleStatusChange = async (match, newStatus) => {
-  await editMatch(match.id, { ...match, status: newStatus })
-}
-
 const teamName = (teamId) => {
   const found = teams.value.find(t => t.id === teamId)
   return found ? found.name : teamId
@@ -146,7 +122,7 @@ const teamName = (teamId) => {
 
 onMounted(async () => {
   await loadTeams()
-  await loadMatches()
+  await loadMatchesByStage('Fase de grupos')
 })
 </script>
 

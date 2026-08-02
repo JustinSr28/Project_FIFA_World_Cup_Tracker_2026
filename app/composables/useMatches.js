@@ -188,10 +188,27 @@ export const useMatches = () => {
   const editMatch = async (id, data) => {
     try {
 
+      const previous = await getMatchById(id)
+      const wasFinished = previous?.status === "Finalizado"
+      const isFinished = data.status === "Finalizado"
+
+      if (isFinished) {
+
+        if (data.homeScore === data.awayScore) {
+          data.winner = null
+        } else if (data.homeScore > data.awayScore) {
+          data.winner = data.homeTeam
+        } else {
+          data.winner = data.awayTeam
+        }
+
+      } else {
+        data.winner = null
+      }
+
       await updateMatch(id, data)
 
-      
-      if (data.status === "Finalizado" && data.group) {
+      if ((isFinished || wasFinished) && data.group) {
         await recalculateGroupStandings(data.group)
       }
 
@@ -205,7 +222,13 @@ export const useMatches = () => {
   const removeMatch = async (id) => {
     try {
 
+      const matchToDelete = await getMatchById(id)
       await deleteMatch(id)
+
+
+      if (matchToDelete?.status === "Finalizado" && matchToDelete?.group) {
+        await recalculateGroupStandings(matchToDelete.group)
+      }
 
       await loadMatches()
 
@@ -213,6 +236,7 @@ export const useMatches = () => {
       error.value = err.message
     }
   }
+
   const loadFilteredMatches = async (filters = {}) => {
 
     try {
@@ -302,19 +326,28 @@ const loadWinPercentage = async () => {
 
   }
 
-}
+  }
+
+  const isGroupStageComplete = async () => {
+
+    const groupStageMatches = await getMatchesByStage("Fase de grupos")
+
+    if (groupStageMatches.length === 0) {
+      return false
+    }
+
+    return groupStageMatches.every(match => match.status === "Finalizado")
+
+  }
 
   return {
     matches,
     match,
-
     playedMatches,
-  averageGoals,
-  winPercentage,
-    
+    averageGoals,
+    winPercentage,
     loading,
     error,
-
     loadMatches,
     loadMatch,
     addMatch,
@@ -328,7 +361,8 @@ const loadWinPercentage = async () => {
     loadFilteredMatches,
     loadPlayedMatches,
     loadAverageGoals,
-    loadWinPercentage
+    loadWinPercentage,
+    isGroupStageComplete
   }
 
 }
