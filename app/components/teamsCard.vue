@@ -11,6 +11,7 @@ defineProps({
 const emit = defineEmits([
     "editar",
   "eliminar",
+  "ver",
   "toggle-favorito"
 ])
 
@@ -64,125 +65,99 @@ const emit = defineEmits([
 
       </div>
 
-
-      <div class="info-item">
-
-        <span>
-          Confederación
-        </span>
-
-        <strong>
-          {{ team.confederation }}
-        </strong>
-
-      </div>
-
-
-      <div class="info-item">
-
-        <span>
-           Entrenador
-        </span>
-
-        <strong>
-          {{ team.coach }}
-        </strong>
-
-      </div>
-
-
-      <div class="info-item ranking">
-
-        <span>
-          Ranking FIFA
-        </span>
-
-        <strong>
-          #{{ team.fifaRanking }}
-        </strong>
-
-      </div>
-
-
     </div>
 
 
     <!-- ACCIONES -->
 
-    <div class="team-actions">
+   <!-- ACCIONES -->
 
+<div class="team-actions">
 
-      <button
-        class="btn-edit"
-        @click="$emit('editar', team)"
-      >
-        ✏️ Editar
-      </button>
+  <button
+    class="btn-view"
+    @click="$emit('ver', team.id)"
+  >
+    👁️
+  </button>
 
+  <button
+    class="btn-edit"
+    @click="$emit('editar', team)"
+  >
+    ✏️
+  </button>
 
-      <button
-        class="btn-delete"
-        @click="$emit('eliminar', team.id)"
-      >
-        🗑 Eliminar
-      </button>
+  <button
+    class="btn-delete"
+    @click="$emit('eliminar', team.id)"
+  >
+    🗑️
+  </button>
 
+</div>
 
-    </div>
+<button
+  class="btn-players"
+  @click="$emit('ver-jugadores', team.id)"
+>
+  👥 Ver jugadores
+</button>
 
 
   </article>
 
 </template>
 
-
 <style scoped lang="scss">
+
 
 .team-card {
 
-    background: #ffffff;
 
-    border-radius: 18px;
+    background:#ffffff;
 
-    padding: 25px;
+    border-radius:16px;
 
-    border: 1px solid #e2e8f0;
+    padding:18px;
+
+    border:1px solid #e2e8f0;
 
     box-shadow:
-        0 8px 25px rgba(15, 42, 74, 0.08);
+        0 8px 25px rgba(15,42,74,.08);
 
-    transition: all .25s ease;
+    transition:.25s ease;
 
-    display: flex;
+    display:flex;
 
-    flex-direction: column;
-
-    min-height: 420px;
+    flex-direction:column;
 
 
     &:hover {
 
-        transform: translateY(-5px);
+        transform:translateY(-5px);
 
         box-shadow:
-            0 14px 35px rgba(15, 42, 74, 0.15);
+            0 14px 35px rgba(15,42,74,.15);
 
     }
 
 }
 
 
+
 /* HEADER */
 
 .team-card__header {
 
-    display: flex;
 
-    justify-content: space-between;
+    display:flex;
 
-    align-items: center;
+    justify-content:space-between;
 
-    margin-bottom: 15px;
+    align-items:center;
+
+    margin-bottom:10px;
 
 }
 
@@ -192,13 +167,14 @@ const emit = defineEmits([
 
 .flag {
 
-    width: 120px;
 
-    height: 75px;
+    width:75px;
 
-    object-fit: contain;
+    height:50px;
 
-    border-radius: 8px;
+    object-fit:contain;
+
+    border-radius:8px;
 
 }
 
@@ -208,38 +184,44 @@ const emit = defineEmits([
 
 .favorite {
 
-    width: 42px;
 
-    height: 42px;
+    width:38px;
 
-    border-radius: 50%;
+    height:38px;
 
-    border: 1px solid #cbd5e1;
+    border-radius:50%;
 
-    background: #f8fafc;
 
-    color: #12355b;
+    border:1px solid #cbd5e1;
 
-    font-size: 23px;
+    background:#f8fafc;
 
-    cursor: pointer;
+    color:#12355b;
 
-    display: flex;
 
-    justify-content: center;
+    font-size:22px;
 
-    align-items: center;
+    cursor:pointer;
 
-    transition: .2s;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    transition:.2s;
+
 
 
     &:hover {
 
-        background: #12355b;
+        background:#12355b;
 
-        color: white;
+        color:white;
 
-        transform: scale(1.08);
+        transform:scale(1.08);
 
     }
 
@@ -251,15 +233,16 @@ const emit = defineEmits([
 
 h2 {
 
-    text-align: center;
 
-    color: #12355b;
+    text-align:left;
 
-    font-size: 1.5rem;
+    color:#12355b;
 
-    margin: 15px 0 20px;
+    font-size:1.35rem;
 
-    font-weight: 800;
+    margin:10px 0;
+
+    font-weight:800;
 
 }
 
@@ -269,55 +252,62 @@ h2 {
 
 .team-info {
 
-    display: flex;
 
-    flex-direction: column;
+    display:flex;
 
-    gap: 12px;
+    flex-direction:column;
 
-    flex: 1;
+    gap:7px;
 
 }
+
 
 
 
 .info-item {
 
-    display: flex;
 
-    justify-content: space-between;
+    display:flex;
 
-    align-items: center;
+    justify-content:space-between;
 
-    padding: 12px 15px;
+    align-items:center;
 
-    background: #f8fafc;
 
-    border: 1px solid #e2e8f0;
+    padding:8px 12px;
 
-    border-radius: 12px;
+
+    background:#f8fafc;
+
+
+    border:1px solid #e2e8f0;
+
+
+    border-radius:10px;
+
 
 
     span {
 
-        color: #64748b;
+        color:#64748b;
 
-        font-size: .9rem;
+        font-size:.85rem;
 
-        font-weight: 600;
+        font-weight:600;
 
     }
 
 
+
     strong {
 
-        color: #12355b;
+        color:#12355b;
 
-        font-size: .95rem;
+        font-size:.9rem;
 
-        font-weight: 700;
+        font-weight:700;
 
-        text-align: right;
+        text-align:right;
 
     }
 
@@ -325,20 +315,11 @@ h2 {
 
 
 
-/* RANKING FIFA */
+/* RANKING OCULTO */
 
 .ranking {
 
-    background: #eef4fb;
-
-
-    strong {
-
-        font-size: 1.2rem;
-
-        color: #0f2a4a;
-
-    }
+    display:none;
 
 }
 
@@ -348,53 +329,84 @@ h2 {
 
 .team-actions {
 
-    display: flex;
 
-    gap: 12px;
+    display:flex;
 
-    margin-top: 25px;
+    gap:10px;
+
+    margin-top:15px;
 
 }
 
 
 
-/* BOTON EDITAR */
+
+.team-actions button {
+
+
+    flex:1;
+
+    padding:8px;
+
+
+    border-radius:8px;
+
+
+    font-size:.9rem;
+
+    font-weight:700;
+
+
+    cursor:pointer;
+
+    transition:.2s;
+
+
+}
+
+
+
+/* VER */
+
+.btn-view {
+
+
+    background:#f2f8ff;
+
+    color:rgb(11, 4, 39);
+
+    border:1px solid #1f334a;
+
+
+
+    &:hover {
+
+        background:#1d4ed8;
+
+    }
+
+}
+
+
+
+/* EDITAR */
 
 .btn-edit {
 
-    flex: 1;
 
-    padding: 11px 15px;
+    background:#e8eef7;
 
-    border-radius: 10px;
+    color:#12355b;
 
-    border: 1px solid #cbd5e1;
+    border:1px solid #cbd5e1;
 
-    background: #e8eef7;
-
-    color: #12355b;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: all .2s;
 
 
     &:hover {
 
-        background: #12355b;
+        background:#12355b;
 
-        color: white;
-
-        border-color: #12355b;
-
-    }
-
-
-    &:active {
-
-        transform: scale(.96);
+        color:white;
 
     }
 
@@ -402,43 +414,24 @@ h2 {
 
 
 
-/* BOTON ELIMINAR */
+/* ELIMINAR */
 
 .btn-delete {
 
-    flex: 1;
 
-    padding: 11px 15px;
+    background:#fff1f2;
 
-    border-radius: 10px;
+    color:#dc2626;
 
-    border: 1px solid #fecaca;
+    border:1px solid #fecaca;
 
-    background: #fff1f2;
-
-    color: #dc2626;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: all .2s;
 
 
     &:hover {
 
-        background: #dc2626;
+        background:#dc2626;
 
         color:white;
-
-        border-color:#dc2626;
-
-    }
-
-
-    &:active {
-
-        transform: scale(.96);
 
     }
 
@@ -453,43 +446,60 @@ h2 {
 
     .team-card {
 
-        padding:20px;
+        padding:15px;
 
     }
+
 
 
     .flag {
 
-        width:90px;
+        width:65px;
 
-        height:60px;
+        height:45px;
 
     }
+
 
 
     .team-actions {
 
-        flex-direction: column;
+        flex-direction:column;
 
     }
 
 
-    .info-item {
 
-        flex-direction: column;
+}
+.btn-players {
 
-        align-items:flex-start;
+    width: 100%;
 
-        gap:5px;
+    margin-top: 12px;
 
+    padding: 10px;
 
-        strong {
+    border: none;
 
-            text-align:left;
+    border-radius: 10px;
 
-        }
+    background: #16a34a;
 
-    }
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+.btn-players:hover {
+
+    background: #15803d;
+
+    transform: translateY(-2px);
 
 }
 

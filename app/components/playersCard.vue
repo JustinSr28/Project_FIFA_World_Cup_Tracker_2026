@@ -3,7 +3,11 @@ import { useTeams } from "~/composables/useTeams"
 
 const props = defineProps({
 
-    player: Object
+    player: Object,
+    showActions: {
+    type: Boolean,
+    default: true
+  }
 
 })
 
@@ -135,30 +139,25 @@ onMounted(async()=>{
 
 
 <!-- ACCIONES -->
-
-<div class="team-actions">
-
+<div
+  v-if="showActions"
+  class="player-actions"
+>
 
   <button
     class="btn-edit"
     @click="$emit('editar', player)"
   >
-
     ✏️ Editar
-
   </button>
-
 
 
   <button
     class="btn-delete"
     @click="$emit('eliminar', player.id)"
   >
-
     🗑 Eliminar
-
   </button>
-
 
 </div>
 
