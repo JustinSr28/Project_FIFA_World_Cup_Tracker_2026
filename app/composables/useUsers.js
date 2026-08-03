@@ -10,7 +10,7 @@ import {
 export const useUsers = () => {
 
   const users = ref([])
-  const user = ref(null)
+  const user = useState("firestoreUser", () => null)
 
   const loading = ref(false)
   const error = ref("")
@@ -105,24 +105,41 @@ export const useUsers = () => {
   //DASHBOARD
   const loadTopUser = async () => {
 
-  try {
+    try {
 
-    loading.value = true
-    error.value = ""
+      loading.value = true
+      error.value = ""
 
-    user.value = await getTopUser()
+      user.value = await getTopUser()
 
-  } catch (err) {
+    } catch (err) {
 
-    error.value = err.message
+      error.value = err.message
 
-  } finally {
+    } finally {
 
-    loading.value = false
+      loading.value = false
+
+    }
 
   }
 
-}
+   const toggleFavoriteMatch = (currentFavorites, matchId) => {
+    const alreadyFavorite = currentFavorites.includes(matchId)
+
+    if (alreadyFavorite) {
+      return currentFavorites.filter(id => id !== matchId)
+    } else {
+      return [...currentFavorites, matchId]
+    }
+  }
+
+
+  const toggleFavoriteMatchAndSave = async (uid, currentFavorites, matchId) => {
+    const updated = toggleFavoriteMatch(currentFavorites, matchId)
+    await updateUser(uid, { favoriteMatches: updated })
+    return updated
+  }
 
   return {
 
@@ -138,7 +155,9 @@ export const useUsers = () => {
    
     loadUsersByFavoriteTeam,
     editUser,
-    loadTopUser
+    loadTopUser,
+    toggleFavoriteMatchAndSave,
+    toggleFavoriteMatch
 
   }
 

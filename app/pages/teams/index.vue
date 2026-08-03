@@ -50,7 +50,15 @@
     
     <div v-else class="teams-grid">
       <div v-for="team in resultadosFiltrados" :key="team.id" class="team-item">
-        <TeamsCard :team="team" @eliminar="confirmarEliminar(team.id)" @editar="iniciarEdicion(team)" @ver="verEquipo" @ver-jugadores="verJugadores" />
+       <TeamsCard
+          :team="team"
+          :es-favorito="firestoreUser?.favoriteTeam === team.id"
+          @eliminar="confirmarEliminar(team.id)"
+          @editar="iniciarEdicion(team)"
+          @ver="verEquipo"
+          @ver-jugadores="verJugadores"
+          @toggle-favorito="handleToggleFavorito"
+        />
       </div>
     </div>
     
@@ -64,8 +72,12 @@
 
 <script setup>
 import { useTeams } from "~/composables/useTeams"
+import { useAuth } from '~/composables/useAuth'
+import { updateUser } from '~/services/usersService'
+
 
 const router = useRouter()
+const { user, firestoreUser, loadUser } = useAuth()
 
 const { teams, loading,error,loadTeams,addTeam,editTeam,removeTeam,loadTeamsByGroup } = useTeams()
 const mostrarFormulario = ref(false)
@@ -81,6 +93,22 @@ const verJugadores = (id) => {
 
 const verEquipo = (id) => {
   router.push(`/teams/${id}`)
+}
+
+const handleToggleFavorito = async (team) => {
+
+  if (!user.value) {
+    alert("Debes iniciar sesión para marcar favoritos")
+    return
+  }
+
+  const isCurrentFavorite = firestoreUser.value?.favoriteTeam === team.id
+
+  await updateUser(user.value.uid, {
+    favoriteTeam: isCurrentFavorite ? "" : team.id
+  })
+
+  await loadUser(user.value.uid)   
 }
 
 const iniciarEdicion = (team) => {

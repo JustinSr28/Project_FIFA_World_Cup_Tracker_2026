@@ -78,15 +78,20 @@ export const useAuth = () => {
   }
 
   const initAuth = () => {
-    onAuthStateChanged($auth, (firebaseUser) => {
+    onAuthStateChanged($auth, async (firebaseUser) => {
       user.value = firebaseUser
+
+      if (firebaseUser) {
+        await loadUser(firebaseUser.uid)
+      }
     })
   }
-
   return {
     user,
     loginGoogle,
     logout,
-    initAuth
+    initAuth,
+    firestoreUser,
+    loadUser
   }
 }

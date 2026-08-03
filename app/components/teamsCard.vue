@@ -4,10 +4,14 @@ defineProps({
   team: {
     type: Object,
     required: true
+  },
+  esFavorito: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits([ "editar", "eliminar", "ver", "toggle-favorito" ])
+const emit = defineEmits(["editar", "eliminar", "ver", "toggle-favorito", "ver-jugadores"])
 
 </script>
 
@@ -18,7 +22,13 @@ const emit = defineEmits([ "editar", "eliminar", "ver", "toggle-favorito" ])
 
       <img :src="team.flag" :alt="team.name" class="flag">
 
-      <button class="favorite" @click="$emit('toggle-favorito', team)"> ☆ </button>
+      <button
+        class="favorite"
+        :class="{ 'favorite--active': esFavorito }"
+        @click="$emit('toggle-favorito', team)"
+      >
+        {{ esFavorito ? '⭐' : '☆' }}
+      </button>
 
     </div>
     
