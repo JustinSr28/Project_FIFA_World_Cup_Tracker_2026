@@ -46,6 +46,7 @@ export const usePlayers = () => {
       error.value = ""
 
       player.value = await getPlayerById(id)
+     
 
     } catch (err) {
 

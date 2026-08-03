@@ -31,22 +31,12 @@ export const useAuth = () => {
       const result = await signInWithPopup($auth, provider)
 
       const firebaseUser = result.user
-      console.log("Usuario Firebase:", firebaseUser)
-
-
-      console.log("UID:", firebaseUser.uid)
-      console.log("Nombre:", firebaseUser.displayName)
-      console.log("Email:", firebaseUser.email)
-      console.log("Foto:", firebaseUser.photoURL)
-
 
       await loadUser(firebaseUser.uid)
       console.log(
         "Usuario encontrado en Firestore:",
         firestoreUser.value
       )
-
-
 
       if (!firestoreUser.value) {
 
@@ -55,13 +45,14 @@ export const useAuth = () => {
           name: firebaseUser.displayName,
           email: firebaseUser.email,
           photo: firebaseUser.photoURL,
-          favoriteTeam: "",
+          favoriteMatches:[],
+          favoriteTeam: [],
           points: 0
         })
-        console.log("Usuario creado correctamente")
+    
       }
       else {
-        console.log("Usuario NO creado correctamente")
+        
 
       }
 

@@ -27,12 +27,11 @@ export const getPlayers = async () => {
 
 
 export const getPlayerById = async (id) => {
+ 
   const { $db } = useNuxtApp()
-
   const reference = doc($db, "players", id)
-
   const snapshot = await getDoc(reference)
-
+  
   if (!snapshot.exists()) {
     return null
   }

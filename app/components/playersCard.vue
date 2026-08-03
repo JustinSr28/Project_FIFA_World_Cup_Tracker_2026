@@ -12,7 +12,7 @@ const props = defineProps({
 
 const { team, loadTeam } = useTeams()
 
-const emit = defineEmits([ "editar", "eliminar"])
+const emit = defineEmits([ "ver", "editar", "eliminar"])
 
 onMounted(async () => {
   if (props.player.teamId) {
@@ -36,18 +36,8 @@ onMounted(async () => {
     <div class="team-info">
 
       <div class="info-item">
-        <span>Club</span>
-        <strong>{{ player.club }} </strong>
-      </div>
-
-      <div class="info-item">
         <span>Posición</span>
         <strong>{{ player.position }}</strong>
-      </div>
-
-      <div class="info-item">
-        <span>Goles</span>
-        <strong>⚽ {{ player.goal }}</strong>
       </div>
 
       <div class="info-item">
@@ -58,8 +48,9 @@ onMounted(async () => {
     </div>
   
     <div v-if="showActions" class="player-actions">
-      <button class="btn-edit" @click="$emit('editar', player)">✏️ Editar</button>
-      <button class="btn-delete" @click="$emit('eliminar', player.id)">🗑 Eliminar</button>
+      <button class="btn-view" @click="$emit('ver', player.id)"> 👁️ </button>
+      <button class="btn-edit" @click="$emit('editar', player)"> ✏️ </button>
+      <button class="btn-delete" @click="$emit('eliminar', player.id)"> 🗑 </button>
     </div>
 
   </article>
@@ -68,20 +59,18 @@ onMounted(async () => {
 <style scoped lang="scss">
 .team-card {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 25px;
+  border-radius: 16px;
+  padding: 18px;
   border: 1px solid #e2e8f0;
   box-shadow:
-    0 8px 25px rgba(15, 42, 74, 0.08);
-  transition: all .25s ease;
+    0 8px 25px rgba(15, 42, 74, .08);
+  transition: .25s ease;
   display: flex;
   flex-direction: column;
-  min-height: 420px;
-
   &:hover {
     transform: translateY(-5px);
     box-shadow:
-      0 14px 35px rgba(15, 42, 74, 0.15);
+      0 14px 35px rgba(15, 42, 74, .15);
   }
 }
 
@@ -167,12 +156,31 @@ h2 {
   }
 }
 
-.team-actions {
+.player-actions {
   display: flex;
   gap: 12px;
   margin-top: 25px;
 }
+.btn-view {
+    flex:1;
+    padding:11px 15px;
+    border-radius:10px;
+    border:1px solid #cbd5e1;
+    background:#e8eef7;
+    color:#12355b;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .2s;
+    &:hover {
+        background:#12355b;
+        color:white;
+        border-color:#12355b;
+    }
+    &:active {
+        transform:scale(.96);
+    }
 
+}
 .btn-edit {
   flex: 1;
   padding: 11px 15px;
@@ -216,4 +224,5 @@ h2 {
     transform: scale(.96);
   }
 }
+
 </style>
