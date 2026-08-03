@@ -76,21 +76,7 @@ export const deleteUser = async (id) => {
 }
 
 
-export const getUserByUid = async (uid) => {
-  const { $db } = useNuxtApp()
 
-  const q = query(
-    collection($db, "users"),
-    where("uid", "==", uid)
-  )
-
-  const snapshot = await getDocs(q)
-
-  return snapshot.docs.map(document => ({
-    id: document.id,
-    ...document.data()
-  }))
-}
 
 
 export const getUsersByFavoriteTeam = async (teamId) => {

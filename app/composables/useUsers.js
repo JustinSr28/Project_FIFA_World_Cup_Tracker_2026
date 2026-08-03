@@ -2,7 +2,6 @@ import {
   getUsers,
   createUser,
   getUserById,
-  getUserByUid,
   getUsersByFavoriteTeam,
   updateUser,
   getTopUser
@@ -80,28 +79,7 @@ export const useUsers = () => {
         }
       }
     
-      
-
-  const loadUserByUid = async (uid) => {
-
-    try {
-
-      loading.value = true
-      error.value = ""
-
-      user.value = await getUserByUid(uid)
-
-    } catch (err) {
-
-      error.value = err.message
-
-    } finally {
-
-      loading.value = false
-
-    }
-
-  }
+    
 
   const loadUsersByFavoriteTeam = async (teamId) => {
 
@@ -157,7 +135,7 @@ export const useUsers = () => {
     loadUsers,
     loadUser,
     addUser,
-    loadUserByUid,
+   
     loadUsersByFavoriteTeam,
     editUser,
     loadTopUser

@@ -1,12 +1,12 @@
 <template>
   <div class="teams-page">
     <h1 class="title">
-      SELECCIONES
+      PLAYERS
     </h1>
 
     <div class="actions">
       <button @click="mostrarFormulario = !mostrarFormulario" class="btn-primary">
-        {{ mostrarFormulario ? 'Cancelar' : '+ Nueva selección' }}
+        {{ mostrarFormulario ? 'Cancelar' : '+ Nuevo jugador' }}
       </button>
     </div>
 
@@ -15,7 +15,7 @@
     <Transition name="fade">
       <div v-if="mostrarFormulario" class="formulario-seccion">
 
-        <TeamsForm :team-inicial="teamEnEdicion" @guardar="guardarTeam" @cancelar="cancelarFormulario" />
+        <PlayersForm :player-inicial="playerEnEdicion"  @guardar="guardarPlayer" @cancelar="cancelarFormulario" />
 
       </div>
 
@@ -23,36 +23,18 @@
 
     <!-- FILTROS -->
     <div class="toolbar">
-      <input v-model="busqueda" class="search-input" type="text" placeholder="🔍 Buscar selección...">
+      <input v-model="busqueda" class="search-input" type="text" placeholder="🔍 Buscar jugador,club,posición...">
 
-      <select v-model="group">
-
-        <option value="">
-          Grupo
-        </option>
-        <option>A</option>
-        <option>B</option>
-        <option>C</option>
-        <option>D</option>
-        <option>E</option>
-        <option>F</option>
-        <option>G</option>
-        <option>H</option>
-      </select>
-
-      <button @click="applyFilter" class="btn-search">
-        Buscar
-      </button>
-
+    
       <button @click="clearFilters" class="btn-clear">
-        Limpiar
+        Refresh
       </button>
     </div>
 
     <!-- ESTADOS -->
 
     <p v-if="loading" class="message">
-      Cargando selecciones...
+      Cargando jugadores...
     </p>
 
     <p v-else-if="error" class="message error">
@@ -60,23 +42,23 @@
     </p>
 
     <p v-else-if="resultadosFiltrados.length === 0" class="message">
-      No se encontraron selecciones.
+      No se encontraron jugadores.
     </p>
 
     <!-- CARDS -->
 
-    <div v-else class="teams-grid">
+    <div v-else class="players-grid">
 
-      <div v-for="team in resultadosFiltrados" :key="team.id" class="team-item">
+      <div v-for="player in resultadosFiltrados" :key="player.id" class="team-item">
 
-        <TeamsCard :team="team" @eliminar="confirmarEliminar(team.id)" @editar="iniciarEdicion(team)" />
+        <playersCard :player="player" @eliminar="confirmarEliminar(player.id)" @editar="iniciarEdicion(player)" />
       </div>
 
     </div>
 
-    <div class="teams-stats">
+    <div class="player-stats">
       <span>
-        Total: {{ teams.length }} selecciones
+        Total: {{ players.length }} jugadores
       </span>
 
       <span>
@@ -89,58 +71,54 @@
 
 <script setup>
 
-import { useTeams } from "~/composables/useTeams"
+import { usePlayers } from "~/composables/usePlayers"
 
 const {
-  teams,
+  players,
   loading,
   error,
-  loadTeams,
-  addTeam,
-  editTeam,
-  removeTeam,
-  loadTeamsByGroup
-} = useTeams()
+  loadPlayers,
+  addPlayer,
+  editPlayer,
+  removePlayer
+} = usePlayers()
 
 const mostrarFormulario = ref(false)
-const teamEnEdicion = ref(null)
-const group = ref("")
+const playerEnEdicion = ref(null)
+
 
 // filtro búsqueda
 const {
-  busqueda,
-  resultadosFiltrados
+    busqueda,
+    resultadosFiltrados
 } = useFiltro(
-  teams,
-  ["name"]
+    players, [ "name", "club", "position" ]
 )
-
 // editar
 
-const iniciarEdicion = (team) => {
-  teamEnEdicion.value = team
-  console.log("Equipo recibido:", team)
+const iniciarEdicion = (player) => {
+  playerEnEdicion.value = player
   mostrarFormulario.value = true
 }
 // cancelar formulario
 const cancelarFormulario = () => {
-  teamEnEdicion.value = null
+  playerEnEdicion.value = null
   mostrarFormulario.value = false
 }
 // guardar crear / editar
-const guardarTeam = async (data) => {
+const guardarPlayer = async (data) => {
 
   try {
 
-    if (teamEnEdicion.value) {
-      await editTeam(
+    if (playerEnEdicion.value) {
+      await editPlayer(
 
-        teamEnEdicion.value.id,
+        playerEnEdicion.value.id,
         data
       )
 
     } else {
-      await addTeam(data)
+      await addPlayer(data)
     }
     cancelarFormulario()
 
@@ -153,39 +131,16 @@ const guardarTeam = async (data) => {
 // eliminar
 
 const confirmarEliminar = async (id) => {
-  await removeTeam(id)
-}
-
-
-// filtros
-async function applyFilter() {
-
-  if (!group.value) {
-
-    await loadTeams()
-
-    return
-
-  }
-  await loadTeamsByGroup(group.value)
-}
-
-
-async function clearFilters() {
-
-  busqueda.value = ""
-  group.value = ""
-
-  await loadTeams()
+  await removePlayer(id)
 }
 
 const refetch = () => {
-  cargarPosts();
+  loadPlayers();
 };
 
 onMounted(async () => {
 
-  await loadTeams()
+  await loadPlayers()
 
 })
 
@@ -463,7 +418,7 @@ onMounted(async () => {
 /* Grid de equipos */
 
 
-.teams-grid {
+.players-grid {
 
 
     display:grid;
@@ -545,7 +500,7 @@ onMounted(async () => {
 /* Estadísticas abajo */
 
 
-.teams-stats {
+.player-stats {
 
 
     margin-top:35px;
@@ -586,7 +541,7 @@ onMounted(async () => {
 
 
 
-    .teams-stats {
+    .player-stats {
 
         flex-direction:column;
 

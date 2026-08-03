@@ -19,6 +19,10 @@
       Equipos
     </NuxtLink>
 
+     <NuxtLink to="/players">
+      Players
+    </NuxtLink>
+
     <NuxtLink to="/matches">
       Fase de grupos
     </NuxtLink>
@@ -61,14 +65,7 @@
         👤
       </div>
 
-      <div class="info">
-
-        <span class="name">
-          {{ user?.displayName || "Usuario" }}
-        </span>
-
-      </div>
-
+      
       <span class="arrow">
         ▼
       </span>
@@ -80,35 +77,12 @@
       class="dropdown"
     >
 
-      <div class="dropdown-user">
-
-        <img
-          v-if="user?.photoURL"
-          :src="user.photoURL"
-          class="dropdown-avatar"
-        >
-
-        <div>
-
-          <strong>
-            {{ user?.displayName }}
-          </strong>
-
-          <p>
-            {{ user?.email }}
-          </p>
-
-        </div>
-
-      </div>
-
-      <hr>
 
       <NuxtLink to="/profile">
         👤 Mi perfil
       </NuxtLink>
 
-      <NuxtLink to="/favorites">
+      <NuxtLink to="/profile/favorites">
         ⭐ Favoritos
       </NuxtLink>
 
@@ -124,20 +98,38 @@
 
 </template>
 
-<script setup>
 
+
+<script setup>
 import { ref } from "vue"
 
 const showMenu = ref(false)
-
 const {
-  user,
-  logout
+    user
 } = useAuth()
 
 
-</script>
+const {
+    user: userFirestore,
+    loadUser
+} = useUsers()
 
+
+watch(
+    user,
+    async (newUser)=>{
+
+        if(!newUser) return
+
+        await loadUser(newUser.uid)
+
+    },
+    {
+        immediate:true
+    }
+)
+
+</script>
 
 
 <style scoped>
