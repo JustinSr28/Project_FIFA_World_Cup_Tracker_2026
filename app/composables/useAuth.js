@@ -46,7 +46,7 @@ export const useAuth = () => {
           email: firebaseUser.email,
           photo: firebaseUser.photoURL,
           favoriteMatches:[],
-          favoriteTeam: [],
+          favoriteTeam: "",
           points: 0
         })
     
