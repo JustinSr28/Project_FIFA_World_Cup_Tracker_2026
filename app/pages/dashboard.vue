@@ -37,9 +37,6 @@
     >
 
 
-
-      <!-- Estado del torneo -->
-
       <section class="main-card">
 
 

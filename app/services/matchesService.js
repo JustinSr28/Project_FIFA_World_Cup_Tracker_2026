@@ -27,6 +27,7 @@ export const getMatches = async () => {
 }
 
 
+
 export const getMatchById = async (id) => {
    const { $db } = useNuxtApp()
 
@@ -119,6 +120,17 @@ export const getMatchesByTeam = async (teamId) => {
   }))
 }
 
+
+export const getOnlyDate = (datetime) => {
+
+    if (!datetime) {
+        return ""
+    }
+
+    return datetime.split("T")[0]
+
+}
+
 //---------FILTERS
 
 export const getMatchesByGroup = async (group) => {
@@ -188,7 +200,7 @@ export async function filterMatches(filters = {}) {
     }
 
     if (filters.date) {
-        constraints.push(where("kickoff", "==", filters.date))
+        constraints.push(where("date", "==", filters.date))
     }
 
     if (constraints.length > 0) {

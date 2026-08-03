@@ -13,7 +13,7 @@
       <NuxtLink to="/brackets"> Brackets </NuxtLink>
       <NuxtLink to="/predictions"> Predicciones </NuxtLink>
       <NuxtLink to="/statistics"> Estadísticas </NuxtLink>
-      <NuxtLink to="/test"> All matches </NuxtLink>
+      <NuxtLink to="/matches/filter"> All matches </NuxtLink>
     </nav>
 
     <div class="profile">

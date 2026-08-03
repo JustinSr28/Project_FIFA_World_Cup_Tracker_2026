@@ -98,6 +98,7 @@ const emptyForm = () => ({
   stadium: '',
   city: '',
   kickoff: '',
+  date: '',
   status: 'Programado',
   homeScore: null,
   awayScore: null,
@@ -110,7 +111,14 @@ const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
 const form = ref(emptyForm())
 
 const handleCreate = async () => {
-  await addMatch({ ...form.value })
+
+  const matchData = {
+    ...form.value,
+    date: form.value.kickoff
+      ? form.value.kickoff.split("T")[0]
+      : ""
+  }
+  await addMatch(matchData)
   await loadMatchesByStage('Fase de grupos')
   form.value = emptyForm()
 }
