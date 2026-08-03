@@ -23,7 +23,7 @@
       Fase de grupos
     </NuxtLink>
 
-    <NuxtLink to="/groups">
+    <NuxtLink to="/standings">
       Standings
     </NuxtLink>
 

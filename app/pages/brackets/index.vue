@@ -29,10 +29,7 @@
 
         <div
           v-else
-          v-for="m in matchesByStage[stage]"
-          :key="m.id"
-          class="bracket-match"
-          :class="{ finished: m.status === 'Finalizado' }"
+          v-for="m in matchesByStage[stage]" :key="m.id" class="bracket-match" :class="{ finished: m.status === 'Finalizado' }"
         >
           <div class="bracket-position">#{{ m.bracketPosition }}</div>
 

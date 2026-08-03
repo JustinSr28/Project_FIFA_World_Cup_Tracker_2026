@@ -111,6 +111,7 @@ const form = ref(emptyForm())
 
 const handleCreate = async () => {
   await addMatch({ ...form.value })
+  await loadMatchesByStage('Fase de grupos')
   form.value = emptyForm()
 }
 

@@ -70,9 +70,16 @@
 import { ref, computed, onMounted } from 'vue'
 import { useMatches } from '~/composables/useMatches'
 import { useStandings } from '~/composables/useStandings'
+import { useTeams } from '~/composables/useTeams'
 
 const { isGroupStageComplete, getMatchesByStage, addMatch } = useMatches()
 const { getQualifiedTeams } = useStandings()
+const { teams, loadTeams } = useTeams()
+
+const teamName = (teamId) => {
+  const found = teams.value.find(t => t.id === teamId)
+  return found ? found.name : teamId
+}
 
 const stages = ['Dieciseisavos', 'Octavos', 'Cuartos', 'Semifinal', 'Tercer lugar', 'Final']
 
@@ -128,7 +135,7 @@ const handleStageChange = async () => {
       return
     }
 
-    const previousStage = form.value.stage === 'Tercer lugar' ? 'Semifinal' : previousStageMap[form.value.stage]
+    const previousStage = previousStageMap[form.value.stage]
 
     const previousMatches = await getMatchesByStage(previousStage)
 
@@ -138,16 +145,14 @@ const handleStageChange = async () => {
     }
 
     if (form.value.stage === 'Tercer lugar') {
-      // Necesitamos a los PERDEDORES de semifinal, no los ganadores
       teamOptions.value = previousMatches.map(m => {
         const loserId = m.winner === m.homeTeam ? m.awayTeam : m.homeTeam
-        return { teamId: loserId, teamName: loserId }
+        return { teamId: loserId, teamName: teamName(loserId) }
       })
     } else {
-      // Ganadores de la ronda anterior
       teamOptions.value = previousMatches.map(m => ({
         teamId: m.winner,
-        teamName: m.winner
+        teamName: teamName(m.winner)
       }))
     }
 
@@ -160,10 +165,11 @@ const handleCreate = async () => {
   await addMatch({ ...form.value })
   form.value = emptyForm()
   teamOptions.value = []
-  await navigateTo('/bracket')
+  await navigateTo('/brackets')
 }
 
 onMounted(async () => {
+  await loadTeams()
   checkingGroupStage.value = true
   groupStageReady.value = await isGroupStageComplete()
   checkingGroupStage.value = false

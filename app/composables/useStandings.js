@@ -157,7 +157,7 @@ export const useStandings = () => {
     })
 
     finishedMatches.forEach(match => {
-      const home = standingsMap[match.homeTeam]
+      const home = standingsMap[[match.homeTeam]]
       const away = standingsMap[match.awayTeam]
 
       if (!home || !away) return

@@ -443,10 +443,10 @@ const loadQualifiedTeams = async (previousStage) => {
     loadAverageGoals,
     loadWinPercentage,
     isGroupStageComplete,
-
-     loadPendingMatches,
-  loadTotalGoals,
-  loadQualifiedTeams,
+    getMatchesByStage,
+    loadPendingMatches,
+    loadTotalGoals,
+    loadQualifiedTeams,
 
   }
 
