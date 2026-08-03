@@ -72,7 +72,7 @@
 
         <div class="match-actions">
           <NuxtLink :to="`/matches/${m.id}`" class="btn-primary">Editar</NuxtLink>
-          <button @click="removeMatch(m.id)" class="btn-danger">Eliminar</button>
+          <button @click="deleteMatch(m.id)" class="btn-danger">Eliminar</button>
         </div>
       </div>
     </div>
@@ -115,6 +115,11 @@ const handleCreate = async () => {
   form.value = emptyForm()
 }
 
+const deleteMatch =  async (teamId) => {
+  await removeMatch(teamId)
+  await loadMatchesByStage('Fase de grupos')
+
+}
 
 const teamName = (teamId) => {
   const found = teams.value.find(t => t.id === teamId)
