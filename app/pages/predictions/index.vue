@@ -12,7 +12,7 @@
         <div v-else class="matches-grid">
             <PredictionsCard v-for="match in resultadosFiltrados" :key="match.id" :match="match"
                 :home-team="getTeam(match.homeTeam)" :away-team="getTeam(match.awayTeam)"
-                :prediction="obtenerPrediccion(match.id)" @save="guardarPrediccion" @delete="eliminarPrediccion" />
+                :prediction="obtenerPrediccion(match.id)" @save="guardarPrediccion" @delete="eliminarPrediccion"  :editable="true" />
         </div>
     </div>
 </template>

@@ -43,10 +43,11 @@
 
           <div class="info">
 
-            <span>Selección</span>
+             <span> Selección</span>
             <strong>{{ team?.name || 'Sin asignar' }}</strong>
 
           </div>
+          
 
         </div>
 
@@ -64,14 +65,18 @@
 
 const route = useRoute()
 
-const { team } = useTeams()
+const { team,loadTeam } = useTeams()
 const { player, loading, error, loadPlayer } = usePlayers()
 
-
+const nameSelection = loadTeam(player.teamId)
 onMounted(async () => {
   await loadPlayer(route.params.id)
+  if (player.value?.teamId) {
+        await loadTeam(player.value.teamId)
+    }
   
 })
+
 
 
 </script>

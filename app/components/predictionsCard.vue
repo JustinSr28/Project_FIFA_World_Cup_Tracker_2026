@@ -11,7 +11,8 @@
             <div class="team">
                 <img v-if="homeTeam" :src="homeTeam.flag" :alt="homeTeam.name" class="team-flag">
                 <strong>{{ homeTeam?.name }}</strong>
-                <input v-if="mostrarFormulario" class="score-input" type="number" min="0" v-model.number="form.homePrediction" @input="calcularGanador">
+                <input v-if="mostrarFormulario" class="score-input" type="number" min="0"
+                    v-model.number="form.homePrediction" @input="calcularGanador">
             </div>
 
             <div class="vs-container">
@@ -21,15 +22,18 @@
             <div class="team">
                 <img v-if="awayTeam" :src="awayTeam.flag" :alt="awayTeam.name" class="team-flag">
                 <strong>{{ awayTeam?.name }}</strong>
-                <input v-if="mostrarFormulario" class="score-input" type="number" min="0" v-model.number="form.awayPrediction" @input="calcularGanador">
+                <input v-if="mostrarFormulario" class="score-input" type="number" min="0"
+                    v-model.number="form.awayPrediction" @input="calcularGanador">
             </div>
         </div>
 
         <div class="match-date"> 📅 {{ match.date }} </div>
 
-        <button v-if="!prediction && !mostrarFormulario" class="prediction-btn" @click="abrirFormulario" > + Hacer predicción </button>
+        <button v-if="editable && !prediction && !mostrarFormulario" class="prediction-btn" @click="abrirFormulario"> +
+            Hacer
+            predicción </button>
 
-        <div v-if="mostrarFormulario" class="prediction-panel">
+        <div v-if="editable && mostrarFormulario" class="prediction-panel">
             <p class="winner">
                 Ganador:
                 <strong>
@@ -62,9 +66,22 @@
                 }}
             </p>
 
-            <div class="prediction-actions">
-               
-                <button  class="edit-btn" @click="abrirFormulario" >Editar</button>
+            <div v-if="!editable" class="prediction-result">
+
+                <p v-if="prediction.evaluated">
+                    <strong>Puntos obtenidos:</strong>
+                    {{ prediction.points }}
+                </p>
+
+                <p v-else>
+                    Predicción pendiente de evaluar.
+                </p>
+
+            </div>
+
+            <div v-if="editable" class="prediction-actions">
+
+                <button class="edit-btn" @click="abrirFormulario">Editar</button>
                 <button class="delete-btn" @click="eliminar"> Eliminar </button>
             </div>
         </div>
@@ -73,6 +90,7 @@
 </template>
 
 <script setup>
+
 const props = defineProps({
     match: {
         type: Object,
@@ -89,9 +107,17 @@ const props = defineProps({
     prediction: {
         type: Object,
         default: null
+    },
+    editable: {
+        type: Boolean,
+        default: true
     }
 })
+import { watchEffect } from "vue"
 
+watchEffect(() => {
+    console.log("Prediction:", props.prediction)
+})
 const emit = defineEmits(["save", "edit", "delete"])
 
 const mostrarFormulario = ref(false)
@@ -99,7 +125,7 @@ const form = reactive({ homePrediction: 0, awayPrediction: 0, predictedWinner: "
 
 const abrirFormulario = () => {
 
-    if(props.prediction){
+    if (props.prediction) {
         form.homePrediction = props.prediction.homePrediction
         form.awayPrediction = props.prediction.awayPrediction
         form.predictedWinner = props.prediction.predictedWinner
@@ -132,12 +158,12 @@ const guardar = () => {
 const eliminar = () => {
     emit(
         "delete",
-       props.prediction.id
+        props.prediction.id
     )
 }
 
 const getWinnerName = () => {
-    if (form.predictedWinner === "draw")  return "Empate"
+    if (form.predictedWinner === "draw") return "Empate"
     return getTeamName(form.predictedWinner)
 }
 

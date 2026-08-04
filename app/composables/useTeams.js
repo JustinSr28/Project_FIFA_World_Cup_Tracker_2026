@@ -31,7 +31,9 @@ export const useTeams = () => {
     try {
       loading.value = true
       error.value = ""
-      team.value = await getTeamById(id)
+      const data = await getTeamById(id)
+      team.value = data
+      return data
     } catch (err) {
       error.value = err.message
     } finally {

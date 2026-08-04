@@ -54,7 +54,9 @@ export const useMatches = () => {
     try {
       loading.value = true
       error.value = ""
-      match.value = await getMatchById(id)
+      const data = await getMatchById(id)
+      match.value = data
+      return data
     } catch (err) {
       error.value = err.message
     } finally {

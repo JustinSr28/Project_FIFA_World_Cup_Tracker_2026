@@ -18,7 +18,6 @@
     
     <div class="toolbar">
       <input v-model="busqueda" class="search-input" type="text" placeholder="🔍 Buscar jugador,club,posición...">
-      <button @click="clearFilters" class="btn-clear"> Refresh </button>
     </div>
    
 
