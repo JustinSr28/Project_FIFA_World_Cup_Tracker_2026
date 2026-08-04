@@ -1,7 +1,10 @@
 <template>
   <div class="teams-page">
 
+    <ReloadButton :loading="loading" @reload="loadTeams"/>
+
     <h1 class="title"> SELECCIONES </h1>
+
     
     <div class="actions">
 
@@ -33,6 +36,10 @@
         <option>F</option>
         <option>G</option>
         <option>H</option>
+        <option>I</option>
+        <option>J</option>
+        <option>K</option>
+        <option>L</option>
       </select>
     
       <button @click="applyFilter" class="btn-search"> Buscar </button>
@@ -40,7 +47,6 @@
     
     </div>
     
-    <!-- ESTADOS -->
 
     <p v-if="loading" class="message"> Cargando selecciones... </p>
     
@@ -154,9 +160,7 @@ async function clearFilters() {
   await loadTeams()
 }
 
-const refetch = () => {
-  cargarPosts();
-};
+
 
 onMounted(async () => { await loadTeams() })
 </script>

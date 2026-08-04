@@ -1,5 +1,5 @@
 <script setup>
-const { teams,loadTeams } = useTeams()
+const { teams, loadTeams } = useTeams()
 
 onMounted(async () => { await loadTeams() })
 
@@ -7,16 +7,13 @@ const props = defineProps({
     playerInicial: Object
 })
 
-const emit = defineEmits([
-    "guardar",
-    "cancelar"
-])
+const emit = defineEmits(["guardar", "cancelar"])
 
 const esEdicion = computed(() => !!props.playerInicial)
 
-const { formulario,cargar, limpiar } = useForm({ club: "", goal: 0, name: "", number: 0, position: "", teamId: "" })
+const { formulario, cargar, limpiar } = useForm({ club: "", goal: 0, name: "", number: 0, position: "", teamId: "" })
 
-const {errores, validar,limpiarErrores } = useValidation(
+const { errores, validar, limpiarErrores } = useValidation(
     formulario,
     {
         club: "Ingrese el club",
@@ -50,7 +47,7 @@ const enviarFormulario = () => {
     })
 }
 const cancelar = () => {
- limpiar()
+    limpiar()
     limpiarErrores()
     emit("cancelar")
 }
@@ -94,6 +91,7 @@ const cancelar = () => {
         <div class="form-grupo">
             <label> Goles</label>
             <input v-model="formulario.goal" type="number" min="0" placeholder="Ej: 5">
+            <span v-if="errores.club" class="error">{{ errores.goal }}</span>
         </div>
 
         <div class="form-grupo">
@@ -103,7 +101,7 @@ const cancelar = () => {
                 <option v-for="team in teams" :key="team.id" :value="team.id"> {{ team.name }} </option>
             </select>
 
-            <span v-if="errores.teamId" class="error">{{ errores.teamId }}  </span>
+            <span v-if="errores.teamId" class="error">{{ errores.teamId }} </span>
         </div>
 
         <div class="form-acciones">
@@ -280,5 +278,4 @@ const cancelar = () => {
         box-shadow: 0 0 0 3px rgba(220, 38, 38, .12);
     }
 }
-
 </style>

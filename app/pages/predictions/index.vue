@@ -1,9 +1,9 @@
 <template>
-
+  <ReloadButton  :loading="loading"  @reload="loadAvailableMatchesForPredictions"/>
     <div class="matches-container">
 
         <h1 class="title"> PREDICCIONES MUNDIAL 2026 </h1>
-        <div class="search-container"> <input v-model="busqueda" class="search-input" type="text" placeholder="🔍 Buscar estadio o ciudad..."> </div>
+        
         
         <div v-if="loading" class="message"> Cargando partidos... </div>
         <div v-else-if="error" class="message error"> {{ error }} </div>
@@ -18,11 +18,11 @@
 </template>
 
 <script setup>
-const { user } = useUsers()
+
 const {matches,loading,error,loadAvailableMatchesForPredictions} = useMatches()
 const {teams,loadTeams } = useTeams()
 const {predictions,loadPredictionsByUser,addPrediction,editPrediction,removesPrediction } = usePredictions()
-
+const { user: userAuth } = useAuth()
 const getTeam = (id) => {
     return teams.value.find(
         team => team.id === id
@@ -30,11 +30,14 @@ const getTeam = (id) => {
 }
 
 const obtenerPrediccion = (matchId) => {
+    if (!userAuth.value) {
+        return null
+    }
 
     return predictions.value.find(
         p =>
             p.matchId === matchId &&
-            p.userId === user.value.uid
+            p.userId === userAuth.value.uid
     )
 
 }
@@ -52,7 +55,7 @@ const guardarPrediccion = async (
             )
         } else {
             await addPrediction({
-                userId: user.value.uid,
+                userId: userAuth.value.uid,
                 matchId,
                 ...data,
                 points: 0,
@@ -60,7 +63,7 @@ const guardarPrediccion = async (
             })
         }
         await loadPredictionsByUser(
-            user.value.uid
+            userAuth.value.uid
         )
     } catch (error) {
         console.error(error)
@@ -72,26 +75,28 @@ const eliminarPrediccion = async (predictionId) => {
         return
     try {
         await removesPrediction(predictionId)
-        await loadPredictionsByUser(user.value.uid)
+        await loadPredictionsByUser(userAuth.value.uid)
     } catch (error) {
         console.error("Error eliminando predicción:", error)
     }
 }
-const { busqueda, resultadosFiltrados } =useFiltro(matches,[
-            "city",
-            "stadium"
-        ]
-    )
+const { busqueda, resultadosFiltrados } =useFiltro(matches,["city","stadium"])
+
 onMounted(async () => {
-    await Promise.all([
-        loadTeams(),
-        loadAvailableMatchesForPredictions(),
-        loadPredictionsByUser(
-            user.value.uid
+
+    await loadTeams()
+
+    await loadAvailableMatchesForPredictions()
+
+    if (userAuth.value) {
+        await loadPredictionsByUser(
+            userAuth.value.uid
         )
-    ])
+    }
+
 })
 </script>
+
 <style scoped lang="scss">
 .matches-container {
     max-width: 1200px;
@@ -172,7 +177,6 @@ onMounted(async () => {
     color: #334155;
 }
 
-/* GRID */
 .matches-grid {
     display: flex;
     flex-wrap: wrap;
@@ -198,7 +202,6 @@ onMounted(async () => {
     font-weight: 700;
 }
 
-/* MENSAJES */
 .message {
     width: 100%;
     text-align: center;

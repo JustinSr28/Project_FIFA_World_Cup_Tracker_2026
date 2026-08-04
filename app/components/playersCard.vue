@@ -1,5 +1,4 @@
 <script setup>
-
 import { useTeams } from "~/composables/useTeams"
 
 const props = defineProps({

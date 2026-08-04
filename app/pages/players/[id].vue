@@ -1,6 +1,8 @@
 <template>
 
   <div v-if="route.path === `/players/${route.params.id}`">
+    
+    <ReloadButton  :loading="loading"  @reload="loadPlayer(route.params.id)"/>
 
     <div v-if="loading" class="message"> Cargando... </div>
 

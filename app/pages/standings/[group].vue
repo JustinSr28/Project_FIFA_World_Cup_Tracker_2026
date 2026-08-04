@@ -1,4 +1,5 @@
 <template>
+  <ReloadButton  :loading="loading"  @reload="load"/>
   <div class="standings-page">
 
     <div class="header">

@@ -8,6 +8,6 @@
 .auth-layout {
   min-height: 100vh;
   width: 100%;
-  background: #f5f7fa; /* o el fondo que quieras para el login */
+  background: #f5f7fa;
 }
 </style>

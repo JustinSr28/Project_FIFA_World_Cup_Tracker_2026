@@ -22,13 +22,7 @@ const emit = defineEmits(["editar", "eliminar", "ver", "toggle-favorito", "ver-j
 
       <img :src="team.flag" :alt="team.name" class="flag">
 
-      <button
-        class="favorite"
-        :class="{ 'favorite--active': esFavorito }"
-        @click="$emit('toggle-favorito', team)"
-      >
-        {{ esFavorito ? '⭐' : '☆' }}
-      </button>
+      <button class="favorite"  :class="{ 'favorite--active': esFavorito }" @click="$emit('toggle-favorito', team)">{{ esFavorito ? '⭐' : '☆' }} </button>
 
     </div>
     
@@ -195,14 +189,15 @@ h2 {
   padding: 10px;
   border: none;
   border-radius: 10px;
-  background: #16a34a;
-  color: white;
+  background: #ebeef3;
+  border-radius: #030d2e 2px;
+  color: rgb(2, 8, 34);
   font-weight: 700;
   cursor: pointer;
   transition: .2s;
 }
 .btn-players:hover {
-  background: #15803d;
+ 
   transform: translateY(-2px);
 }
 </style>

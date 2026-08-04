@@ -1,4 +1,5 @@
 <template>
+    <ReloadButton  :loading="loading"  @reload="loadFavoriteMatches"/>
   <div class="favorites-page">
 
     <h1>Mis favoritos</h1>

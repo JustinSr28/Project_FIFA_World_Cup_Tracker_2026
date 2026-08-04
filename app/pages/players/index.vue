@@ -1,5 +1,5 @@
 <template>
-
+  <ReloadButton  :loading="loading"  @reload="loadPlayers"/>
   <div class="teams-page">
 
     <h1 class="title">PLAYERS </h1>

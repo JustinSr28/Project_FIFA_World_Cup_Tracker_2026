@@ -11,8 +11,7 @@
             <div class="team">
                 <img v-if="homeTeam" :src="homeTeam.flag" :alt="homeTeam.name" class="team-flag">
                 <strong>{{ homeTeam?.name }}</strong>
-                <input v-if="mostrarFormulario" class="score-input" type="number" min="0"
-                    v-model.number="form.homePrediction" @input="calcularGanador">
+                <input v-if="mostrarFormulario" class="score-input" type="number" min="0" v-model.number="form.homePrediction" @input="calcularGanador">
             </div>
 
             <div class="vs-container">
@@ -22,8 +21,7 @@
             <div class="team">
                 <img v-if="awayTeam" :src="awayTeam.flag" :alt="awayTeam.name" class="team-flag">
                 <strong>{{ awayTeam?.name }}</strong>
-                <input v-if="mostrarFormulario" class="score-input" type="number" min="0"
-                    v-model.number="form.awayPrediction" @input="calcularGanador">
+                <input v-if="mostrarFormulario" class="score-input" type="number" min="0" v-model.number="form.awayPrediction" @input="calcularGanador">
             </div>
         </div>
 
@@ -102,20 +100,11 @@ const form = reactive({ homePrediction: 0, awayPrediction: 0, predictedWinner: "
 const abrirFormulario = () => {
 
     if(props.prediction){
-
-        form.homePrediction =
-            props.prediction.homePrediction
-
-        form.awayPrediction =
-            props.prediction.awayPrediction
-
-        form.predictedWinner =
-            props.prediction.predictedWinner
-
+        form.homePrediction = props.prediction.homePrediction
+        form.awayPrediction = props.prediction.awayPrediction
+        form.predictedWinner = props.prediction.predictedWinner
     }
-
     mostrarFormulario.value = true
-
 }
 
 const cancelar = () => {
@@ -139,8 +128,6 @@ const guardar = () => {
     )
     mostrarFormulario.value = false
 }
-
-
 
 const eliminar = () => {
     emit(

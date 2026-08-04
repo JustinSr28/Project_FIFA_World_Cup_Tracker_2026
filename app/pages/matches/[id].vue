@@ -1,4 +1,5 @@
 <template>
+  <ReloadButton  :loading="loading"  @reload="loadMatch(route.params.id)"/>
   <div class="edit-match-page">
 
     <h1>Editar partido</h1>

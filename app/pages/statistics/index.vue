@@ -1,4 +1,5 @@
 <template>
+    <ReloadButton  :loading="loading"  @reload="loadTopScorer"/>
     <div class="stats-container">
 
         <h1 class="title"> ESTADÍSTICAS DEL MUNDIAL 2026</h1>
@@ -75,93 +76,115 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-
 .stats-container {
-    min-height: 100vh;
-    background: #f1f5f9;
-    max-width: 1200px;
+    max-width: 1150px;
     margin: auto;
-    padding: 45px 25px;
+    padding: 35px 20px;
 }
+
 .title {
     text-align: center;
-    color: #0f2a4a;
-    font-size: 2.2rem;
-    font-weight: 900;
-    margin-bottom: 50px;
+    color: #111827;
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 35px;
+    letter-spacing: .5px;
 }
+
 .stats-grid {
     display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
+
 .stat-card {
     background: #ffffff;
-    border-radius: 20px;
-    padding: 35px 25px;
-    text-align: center;
-    border: 1px solid #dbe4ee;
-    box-shadow:
-        0 8px 25px rgba(15, 42, 74, .08);
-    transition: .25s ease;
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow:
-            0 14px 35px rgba(15, 42, 74, .15);
-    }
-}
-.stat-card h3 {
-    color: #64748b;
-    font-size: .85rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-}
-.main-value {
-    color: #12355b;
-    font-size: 1.6rem;
-    font-weight: 900;
-    margin: 15px 0;
-}
-.number {
-    color: #0f2a4a;
-    font-size: 3.5rem;
-    font-weight: 900;
-    margin: 15px 0;
-}
-.stat-card span {
-    color: #64748b;
-    font-weight: 700;
-}
-.featured {
-    border-top: 5px solid #12355b;
-}
-.stat-card:nth-child(2) {
-    border-top: 5px solid #1e3a5f;
-}
-.stat-card:nth-child(3) {
-    border-top: 5px solid #475569;
-}
-.stat-card:nth-child(4) {
-    border-top: 5px solid #64748b;
-}
-.stat-card:nth-child(5) {
-    border-top: 5px solid #12355b;
-}
-.stat-card:nth-child(6) {
-    border-top: 5px solid #334155;
-}
-.message {
-    max-width: 450px;
-    margin: 50px auto;
-    padding: 30px;
-    background: white;
     border-radius: 18px;
+    padding: 25px 20px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 150px;
+    transition: .25s ease;
+    position: relative;
+    overflow: hidden;
+}
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #cbd5e1;
+}
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+}
+
+.stat-card h3 {
+    color: #6b7280;
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 15px;
+    letter-spacing: .6px;
+}
+
+.main-value {
+    color: #111827;
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0 0 10px;
+}
+
+.number {
+    color: #111827;
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin: 0 0 8px;
+}
+
+.stat-card span {
+    color: #9ca3af;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+.featured::before {
+    background: #111827;
+}
+.stat-card:nth-child(2)::before {
+    background: #374151;
+}
+.stat-card:nth-child(3)::before {
+    background: #6b7280;
+}
+.stat-card:nth-child(4)::before {
+    background: #9ca3af;
+}
+.stat-card:nth-child(5)::before {
+    background: #4b5563;
+}
+.stat-card:nth-child(6)::before {
+    background: #1f2937;
+}
+
+.message {
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 22px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
     text-align: center;
-    border: 1px solid #e2e8f0;
+    color: #6b7280;
 }
 .error {
-    color: #dc2626;
+    color: #b91c1c;
+    border-color: #fecaca;
 }
+
 </style>

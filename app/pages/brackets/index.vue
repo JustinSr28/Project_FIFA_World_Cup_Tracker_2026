@@ -1,4 +1,5 @@
 <template>
+  <ReloadButton  :loading="loading"  @reload="loadTeams"/>
   <div class="bracket-page">
 
     <div class="header">

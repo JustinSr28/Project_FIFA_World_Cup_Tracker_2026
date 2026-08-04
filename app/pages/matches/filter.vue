@@ -1,4 +1,5 @@
 <template>
+    <ReloadButton  :loading="loading"  @reload="loadFilteredMatches"/>
     <div class="matches-container">
 
         <h1 class="title"> PARTIDOS MUNDIAL 2026 </h1>

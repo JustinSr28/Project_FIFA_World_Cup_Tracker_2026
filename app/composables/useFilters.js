@@ -1,5 +1,3 @@
-// composables/useFiltro.js
-
 export const useFiltro = (items, campos = []) => {
 
   const busqueda = ref("")

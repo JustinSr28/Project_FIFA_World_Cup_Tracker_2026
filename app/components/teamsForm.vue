@@ -110,16 +110,19 @@ const cancelar = () => {
         <div class="form-grupo">
             <label> Entrenador </label>
             <input v-model="formulario.coach" :class="{ 'input-error': errores.coach }" placeholder="Ej: Miguel Herrera">
+            <span v-if="errores.group" class="error">{{ errores.coach }} </span>
         </div>
 
         <div class="form-grupo">
             <label>Confederación </label>
             <input v-model="formulario.confederation" :class="{ 'input-error': errores.confederation }" placeholder="Ej: Concacaf">
+            <span v-if="errores.group" class="error">{{ errores.confederation }} </span>
         </div>
 
         <div class="form-grupo">
             <label>Ranking FIFA </label>
-            <input v-model="formulario.fifaRanking" :class="{ 'input-error': errores.fifaRanking }" type="number" placeholder="Ej: 40">
+            <input v-model="formulario.fifaRanking" :class="{ 'input-error': errores.fifaRanking }" type="number"  min="0" placeholder="Ej: 40">
+            <span v-if="errores.group" class="error">{{ errores.fifaRanking }} </span>
         </div>
 
         <div class="form-acciones">

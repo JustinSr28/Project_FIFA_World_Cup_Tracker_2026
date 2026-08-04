@@ -1,4 +1,6 @@
 <template>
+  
+   <ReloadButton  :loading="loading"  @reload="loadPlayersByTeam(route.params.id)"/>
 
   <div class="players-page">
 

@@ -10,74 +10,48 @@ import {
   getLeastGoalTeam
 } from "~/services/standingsService"
 
-import { getTeamsByGroup, getTeams  } from "~/services/teamsService"
+import { getTeamsByGroup, getTeams } from "~/services/teamsService"
 import { getMatchesByGroup } from "~/services/matchesService"
 
 export const useStandings = () => {
-
   const standings = ref([])
   const standing = ref(null)
-
   const loading = ref(false)
   const error = ref("")
 
   const loadStandings = async () => {
-
     try {
-
       loading.value = true
       error.value = ""
-
       standings.value = await getStandings()
-
     } catch (err) {
-
       error.value = err.message
-
     } finally {
-
       loading.value = false
-
     }
-
   }
 
   const loadStanding = async (id) => {
-
     try {
-
       loading.value = true
       error.value = ""
-
       standing.value = await getStandingById(id)
-
     } catch (err) {
-
       error.value = err.message
-
     } finally {
-
       loading.value = false
-
     }
-
   }
 
   const addStanding = async (data) => {
-
     await createStanding(data)
-
     await loadStandings()
-
   }
 
   const editStanding = async (id, data) => {
     try {
-
       await updateStanding(id, data)
-
       await loadStandings()
-
     } catch (err) {
       error.value = err.message
     }
@@ -85,62 +59,39 @@ export const useStandings = () => {
 
   const removeStanding = async (id) => {
     try {
-
       await deleteStanding(id)
-
       await loadStandings()
-
     } catch (err) {
       error.value = err.message
     }
   }
 
-
   const loadStandingsByGroup = async (group) => {
-
     try {
-
       loading.value = true
       error.value = ""
-
       standings.value = await getStandingsByGroup(group)
-
     } catch (err) {
-
       error.value = err.message
-
     } finally {
-
       loading.value = false
-
     }
-
   }
 
   const loadStandingByTeam = async (teamId) => {
-
     try {
-
       loading.value = true
       error.value = ""
-
       standings.value = await getStandingByTeam(teamId)
-
     } catch (err) {
-
       error.value = err.message
-
     } finally {
-
       loading.value = false
-
     }
-
   }
 
   function calculateGroupStandings(teams, finishedMatches) {
     const standingsMap = {}
-
     teams.forEach(team => {
       standingsMap[team.id] = {
         teamId: team.id,
@@ -155,21 +106,16 @@ export const useStandings = () => {
         points: 0
       }
     })
-
     finishedMatches.forEach(match => {
       const home = standingsMap[[match.homeTeam]]
       const away = standingsMap[match.awayTeam]
-
       if (!home || !away) return
-
       home.played++
       away.played++
       home.goalsFor += match.homeScore
       home.goalsAgainst += match.awayScore
-
       away.goalsFor += match.awayScore
       away.goalsAgainst += match.homeScore
-
       if (match.homeScore > match.awayScore) {
         home.wins++
         home.points += 3
@@ -185,7 +131,6 @@ export const useStandings = () => {
         away.points += 1
       }
     })
-
     Object.values(standingsMap).forEach(standing => {
       standing.goalDifference = standing.goalsFor - standing.goalsAgainst
     })
@@ -197,7 +142,6 @@ export const useStandings = () => {
     const allMatches = await getMatchesByGroup(group)
     const finishedMatches = allMatches.filter(m => m.status === "Finalizado")
     const newStandings = calculateGroupStandings(teams, finishedMatches)
-
     for (const standing of newStandings) {
       const existing = await getStandingByTeam(standing.teamId)
       if (existing.length > 0) {
@@ -209,103 +153,73 @@ export const useStandings = () => {
   }
 
   const sortStandings = (standings) => {
-    const standingOrdered = [...standings] 
+    const standingOrdered = [...standings]
     return standingOrdered.sort((teamA, teamB) => {
       if (teamB.points !== teamA.points)
-         return teamB.points - teamA.points
-      else 
+        return teamB.points - teamA.points
+      else
         return teamB.goalDifference - teamA.goalDifference
     })
   }
 
   const getQualifiedTeams = async () => {
     const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
-    const qualified = []      
-    const thirdPlaceCandidates = [] 
-  
+    const qualified = []
+    const thirdPlaceCandidates = []
     for (const group of groups) {
-
       const standings = await getStandingsByGroup(group)
       const sorted = sortStandings(standings)
-
       if (sorted[0])
-         qualified.push(sorted[0])
+        qualified.push(sorted[0])
       if (sorted[1])
-         qualified.push(sorted[1])
+        qualified.push(sorted[1])
       if (sorted[2])
-         thirdPlaceCandidates.push(sorted[2])
+        thirdPlaceCandidates.push(sorted[2])
     }
-
     const bestThirds = sortStandings(thirdPlaceCandidates).slice(0, 8)
     const allQualified = [...qualified, ...bestThirds]
-
     const teams = await getTeams()
-
-    const allQualifiedWithTeamNames = []   
-
-    for (let i = 0; i < allQualified.length; i++) {   
-
-      const standing = allQualified[i]  
-      const team = teams.find(t => t.id === standing.teamId) 
-
-      const newObjet = {   
+    const allQualifiedWithTeamNames = []
+    for (let i = 0; i < allQualified.length; i++) {
+      const standing = allQualified[i]
+      const team = teams.find(t => t.id === standing.teamId)
+      const newObjet = {
         teamId: standing.teamId,
         teamName: team ? team.name : standing.teamId,
         group: standing.group,
         points: standing.points,
         goalDifference: standing.goalDifference
       }
-
-      allQualifiedWithTeamNames.push(newObjet)   
+      allQualifiedWithTeamNames.push(newObjet)
     }
-
     return allQualifiedWithTeamNames
   }
 
-
   //stats
   const loadMostGoalsTeam = async () => {
-
     try {
-
       loading.value = true
       error.value = ""
-
       standing.value = await getMostGoalsTeam()
-
     } catch (err) {
-
       error.value = err.message
-
     } finally {
-
       loading.value = false
-
     }
-
   }
 
   const loadLeastGoalsTeam = async () => {
-
     try {
-
       loading.value = true
       error.value = ""
-
       standing.value = await getLeastGoalTeam()
-
     } catch (err) {
-
       error.value = err.message
-
     } finally {
-
       loading.value = false
-
     }
-
   }
-
+  
   return {
     standings,
     standing,
@@ -326,5 +240,4 @@ export const useStandings = () => {
     recalculateGroupStandings,
     getQualifiedTeams
   }
-
 }

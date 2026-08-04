@@ -1,4 +1,5 @@
 <template>
+  <ReloadButton  :loading="loading"  @reload="loadTeams"/>
   <div class="create-bracket-page">
 
     <h1>Crear partido de eliminatoria</h1>
