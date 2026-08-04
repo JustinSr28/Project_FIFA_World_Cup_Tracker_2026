@@ -310,3 +310,21 @@ export const getQualifiedTeams = async (previousStage) => {
   ).length
 
 }
+
+//predictions
+export const getAvailableMatchesForPredictions = async () => {
+
+  const { $db } = useNuxtApp()
+
+  const q = query(
+    collection($db, "matches"),
+    where("status", "!=", "Finalizado")
+  )
+
+  const snapshot = await getDocs(q)
+
+  return snapshot.docs.map(document => ({
+    id: document.id,
+    ...document.data()
+  }))
+}

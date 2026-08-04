@@ -129,5 +129,44 @@ export const getPredictionsCountByUser = async (userId) => {
   const predictions = await getPredictionsByUser(userId)
 
   return predictions.length
+}
+
+export const getTopPredictionUser = async () => {
+
+    const { $db } = useNuxtApp()
+
+    const predictionsSnapshot = await getDocs(
+        collection($db, "predictions")
+    )
+
+    const totals = {}
+
+    predictionsSnapshot.docs.forEach(document => {
+
+        const prediction = document.data()
+
+        if (!totals[prediction.userId]) {
+            totals[prediction.userId] = 0
+        }
+
+        totals[prediction.userId] += prediction.points || 0
+
+    })
+
+    let topUserId = null
+    let maxPoints = 0
+
+    for (const userId in totals) {
+
+        if (totals[userId] > maxPoints) {
+            maxPoints = totals[userId]
+            topUserId = userId
+        }
+    }
+
+    return {
+        userId: topUserId,
+        points: maxPoints
+    }
 
 }

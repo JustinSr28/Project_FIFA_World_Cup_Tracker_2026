@@ -48,6 +48,7 @@ import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMatches } from '~/composables/useMatches'
 import { useTeams } from '~/composables/useTeams'
+const {updatePredictionScores} = usePredictions()
 
 const route = useRoute()
 const { match, loading, error, loadMatch, editMatch } = useMatches()
@@ -84,6 +85,14 @@ const handleSave = async () => {
   }
 
   await editMatch(match.value.id, { ...match.value, ...editForm.value })
+const updatedMatch = {
+    ...match.value,
+    ...editForm.value
+}
+
+console.log("Partido actualizado:", updatedMatch)
+
+ updatePredictionScores(updatedMatch)
 
   await navigateTo(isKnockoutMatch ? '/brackets' : '/matches')
 }

@@ -6,15 +6,23 @@ import {
   getPredictionsByWinner,
   deletePrediction,
   updatePrediction,
-  getPredictionsCountByUser
+  getPredictionsCountByUser,
+  getPredictionsByUser,
+  getTopPredictionUser,
+  
 } from "~/services/predictionsService"
+import {
+    updatePredictionScores
+} from "~/services/predictionScoreService"
 
 export const usePredictions = () => {
 
   const predictions = ref([])
   const prediction = ref(null)
+ 
 
   const predictionsCount = ref(0)
+  const topPredictionUser = ref(null)
   const loading = ref(false)
   const error = ref("")
 
@@ -159,12 +167,56 @@ const loadPredictionsCountByUser = async (userId) => {
     }
 
   }
+
+
+  const loadPredictionsByUser = async (userId) => {
+
+    try {
+
+        loading.value = true
+        error.value = ""
+
+        predictions.value = await getPredictionsByUser(userId)
+
+    } catch (err) {
+
+        error.value = err.message
+
+    } finally {
+
+        loading.value = false
+    }
+
+}
+
+const loadTopPredictionUser = async () => {
+
+    try {
+
+        loading.value = true
+        error.value = ""
+
+        topPredictionUser.value =
+            await getTopPredictionUser()
+
+    } catch (err) {
+
+        error.value = err.message
+
+    } finally {
+
+        loading.value = false
+
+    }
+
+}
+
   return {
 
     predictions,
     prediction,
     predictionsCount,
-
+topPredictionUser,
     loading,
     error,
 
@@ -175,8 +227,10 @@ const loadPredictionsCountByUser = async (userId) => {
     loadPredictionsByWinner,
     removesPrediction,
     editPrediction,
-    loadPredictionsCountByUser
-
+    loadPredictionsCountByUser,
+    loadPredictionsByUser,
+    updatePredictionScores,
+    loadTopPredictionUser
   }
 
 }

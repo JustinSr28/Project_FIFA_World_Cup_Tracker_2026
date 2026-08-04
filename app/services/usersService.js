@@ -109,3 +109,20 @@ export const getTopUser = async () => {
   )[0]
 
 }
+
+
+export const getUserNameById = async (userId) => {
+
+    const { $db } = useNuxtApp()
+
+    const userDocument = await getDoc(
+        doc($db, "users", userId)
+    )
+
+    if (!userDocument.exists()) {
+        return null
+    }
+
+    return userDocument.data().name
+
+}

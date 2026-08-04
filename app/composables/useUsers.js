@@ -4,7 +4,8 @@ import {
   getUserById,
   getUsersByFavoriteTeam,
   updateUser,
-  getTopUser
+  getTopUser,
+  getUserNameById
 } from "~/services/usersService"
 
 export const useUsers = () => {
@@ -58,6 +59,29 @@ export const useUsers = () => {
     }
 
   }
+
+   const loadNameUserbyId = async (id) => {
+
+    try {
+
+        loading.value = true
+        error.value = ""
+
+        user.value = await getUserNameById(id)
+
+        return user.value
+
+    } catch (err) {
+
+        error.value = err.message
+
+    } finally {
+
+        loading.value = false
+
+    }
+
+}
 
   const addUser = async (data) => {
 
@@ -157,7 +181,8 @@ export const useUsers = () => {
     editUser,
     loadTopUser,
     toggleFavoriteMatchAndSave,
-    toggleFavoriteMatch
+    toggleFavoriteMatch,
+    loadNameUserbyId
 
   }
 

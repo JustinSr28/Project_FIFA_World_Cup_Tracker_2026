@@ -15,7 +15,8 @@ import {
   getAverageGoals,
   getPendingMatches,
   getTotalGoals,
-  getQualifiedTeams
+  getQualifiedTeams,
+ getAvailableMatchesForPredictions
 } from "~/services/matchesService"
 
 import { useStandings } from "~/composables/useStandings"
@@ -415,6 +416,28 @@ const loadQualifiedTeams = async (previousStage) => {
 
 }
 
+//PREDICTIONS
+const loadAvailableMatchesForPredictions = async () => {
+
+  loading.value = true
+  error.value = null
+
+  try {
+
+    matches.value = await getAvailableMatchesForPredictions()
+
+  } catch (err) {
+
+    error.value = err
+
+  } finally {
+
+    loading.value = false
+
+  }
+
+}
+
   return {
     matches,
     match,
@@ -447,7 +470,7 @@ const loadQualifiedTeams = async (previousStage) => {
     loadPendingMatches,
     loadTotalGoals,
     loadQualifiedTeams,
-
+    loadAvailableMatchesForPredictions
   }
 
 }

@@ -177,12 +177,12 @@
 
 
           <p>
-            {{ user?.name }}
+            {{topUserName }}
           </p>
 
 
           <span>
-            ⭐ {{ user?.points }} puntos
+            ⭐ {{ topPredictionUser?.points }} puntos
           </span>
 
         </div>
@@ -201,7 +201,7 @@
 </template>
 
 <script setup>
-
+const topUserName = ref("")
 const {
 
   playedMatches,
@@ -234,19 +234,23 @@ const {
 
   error: errorUsers,
 
-  loadTopUser
+  loadNameUserbyId
 
 } = useUsers()
+
+
 
 const {
 
   predictionsCount,
 
   loading: loadingPredictions,
-
   error: errorPredictions,
 
-  loadPredictionsCountByUser
+  loadPredictionsCountByUser,
+  loadTopPredictionUser,
+  topPredictionUser
+   
 
 } = usePredictions()
 
@@ -271,6 +275,22 @@ const error = computed(() =>
   errorPredictions.value
 
 )
+
+const loadTopUser = async () => {
+
+    await loadTopPredictionUser()
+
+    if(topPredictionUser.value){
+
+        topUserName.value =
+            await loadNameUserbyId(
+                topPredictionUser.value.userId
+            )
+            console.log(topUserName.value)
+
+    }
+
+}
 
 onMounted(async () => {
 
@@ -348,27 +368,14 @@ await loadPredictionsCountByUser(authUser.value.uid)
 
 }
 
-
-
-/* Tarjeta principal */
-
 .main-card {
-
-
   background:white;
-
   border-radius:20px;
-
   padding:35px;
-
   border:1px solid #dbe3ec;
-
   box-shadow:
   0 8px 20px rgba(15,42,74,.10);
-
-
 }
-
 
 
 .main-card h2 {
