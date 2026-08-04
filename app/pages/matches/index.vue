@@ -65,6 +65,14 @@
           vs
           <strong>{{ m.awayScore ?? '-' }} {{ teamName(m.awayTeam) }}</strong>
           <span class="badge">{{ m.status }}</span>
+
+          <button
+            class="favorite"
+            :class="{ 'favorite--active': esFavoritoMatch(m.id) }"
+            @click="handleToggleFavoriteMatch(m.id)"
+          >
+            {{ esFavoritoMatch(m.id) ? '⭐' : '☆' }}
+          </button>
         </div>
         <div class="match-meta">
           Grupo {{ m.group }} · {{ m.stadium }}, {{ m.city }}
@@ -83,11 +91,15 @@
 import { ref, onMounted } from 'vue'
 import { useMatches } from '~/composables/useMatches'
 import { useTeams } from '~/composables/useTeams'
+import { useAuth } from '~/composables/useAuth'
+import { useUsers } from '~/composables/useUsers'
 
 
 
 const { matches, loading, error, addMatch, removeMatch, loadMatchesByStage } = useMatches()
 const { teams, loadTeams } = useTeams()
+const { user, firestoreUser } = useAuth()
+const { toggleFavoriteMatchAndSave, loadUser } = useUsers()
 
 
 const emptyForm = () => ({
@@ -138,6 +150,26 @@ onMounted(async () => {
   await loadTeams()
   await loadMatchesByStage('Fase de grupos')
 })
+
+const esFavoritoMatch = (matchId) => {
+  return firestoreUser.value?.favoriteMatches?.includes(matchId) || false
+}
+
+const handleToggleFavoriteMatch = async (matchId) => {
+
+  if (!user.value) {
+    alert("Debes iniciar sesión para marcar favoritos")
+    return
+  }
+
+  const current = firestoreUser.value?.favoriteMatches || []
+
+  await toggleFavoriteMatchAndSave(user.value.uid, current, matchId)
+
+  const { loadUser } = useUsers()
+  await loadUser(user.value.uid)
+}
+
 </script>
 
 <style scoped>

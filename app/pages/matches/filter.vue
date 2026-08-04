@@ -94,7 +94,13 @@
                         </div>
                     </div>
                 </div>
-                <button class="favorite-btn">⭐</button>
+               <button
+                class="favorite-btn"
+                :class="{ 'favorite-btn--active': esFavoritoMatch(match.id) }"
+                @click="handleToggleFavoriteMatch(match.id)"
+                >
+                {{ esFavoritoMatch(match.id) ? '⭐' : '☆' }}
+                </button>
             </div>
         </div>
     </div>
@@ -103,6 +109,26 @@
 <script setup>
 const { matches, loading, error, loadFilteredMatches } = useMatches()
 const { teams, team, loadTeams, loadTeam } = useTeams()
+const { user, firestoreUser } = useAuth()
+const { toggleFavoriteMatchAndSave, loadUser } = useUsers()
+
+
+const esFavoritoMatch = (matchId) => {
+  return firestoreUser.value?.favoriteMatches?.includes(matchId) || false
+}
+
+const handleToggleFavoriteMatch = async (matchId) => {
+
+  if (!user.value) {
+    alert("Debes iniciar sesión para marcar favoritos")
+    return
+  }
+
+  const current = firestoreUser.value?.favoriteMatches || []
+
+  await toggleFavoriteMatchAndSave(user.value.uid, current, matchId)
+  await loadUser(user.value.uid)
+}
 
 const getTeam = (id) => {
     const result = teams.value.find(
