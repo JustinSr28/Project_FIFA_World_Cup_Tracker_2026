@@ -1,206 +1,227 @@
 <template>
 
-  <div class="dashboard-container">
+<h1 class="title">
+  ⚽ FIFA WORLD CUP 2026
+</h1>
 
+<p class="subtitle">
+  Panel de control del torneo
+</p>
 
-    <h1 class="title">
-      ⚽ FIFA WORLD CUP 2026
-    </h1>
 
-    <p class="subtitle">
-      Panel de control del torneo
-    </p>
 
+<div
+  v-if="loading"
+  class="message"
+>
+  Cargando indicadores...
+</div>
 
 
-    <div
-      v-if="loading"
-      class="message"
-    >
-      Cargando indicadores...
-    </div>
 
+<div
+  v-else-if="error"
+  class="message error"
+>
+  {{ error }}
+</div>
 
 
-    <div
-      v-else-if="error"
-      class="message error"
-    >
-      {{ error }}
-    </div>
 
+<div
+  v-else
+  class="dashboard"
+>
 
 
-    <div
-      v-else
-      class="dashboard"
-    >
+  <section class="main-card">
 
 
-      <section class="main-card">
+    <h2>
+      🏟 Estado del torneo
+    </h2>
 
 
-        <h2>
-          🏟 Estado del torneo
-        </h2>
+    <div class="stats">
 
 
-        <div class="stats">
+      <div class="stat-item">
 
+        <span>
+          Partidos jugados
+        </span>
 
-          <div class="stat-item">
-
-            <span>
-              Partidos jugados
-            </span>
-
-            <strong>
-              {{ playedMatches }}
-            </strong>
-
-          </div>
-
-
-
-          <div class="stat-item">
-
-            <span>
-              Partidos pendientes
-            </span>
-
-            <strong>
-              {{ pendingMatches }}
-            </strong>
-
-          </div>
-
-
-
-          <div class="stat-item">
-
-            <span>
-              Goles anotados
-            </span>
-
-            <strong>
-              {{ totalGoals }}
-            </strong>
-
-          </div>
-
-
-        </div>
-
-
-      </section>
-
-
-
-
-
-      <!-- Indicadores secundarios -->
-
-      <div class="cards-grid">
-
-
-
-        <div class="card">
-
-
-          <div class="icon">
-            🏆
-          </div>
-
-
-          <h3>
-            Selecciones clasificadas
-          </h3>
-
-
-          <strong>
-            {{ qualifiedTeams }}
-          </strong>
-
-
-        </div>
-
-
-
-
-
-        <div class="card">
-
-
-          <div class="icon">
-            🎯
-          </div>
-
-
-          <h3>
-            Predicciones realizadas
-          </h3>
-
-
-          <strong>
-            {{ predictionsCount }}
-          </strong>
-
-
-        </div>
-
-
-
+        <strong>
+          {{ playedMatches }}
+        </strong>
 
       </div>
 
 
 
+      <div class="stat-item">
+
+        <span>
+          Partidos pendientes
+        </span>
+
+        <strong>
+          {{ pendingMatches }}
+        </strong>
+
+      </div>
 
 
 
-      <!-- Usuario destacado -->
+      <div class="stat-item">
 
+        <span>
+          Goles anotados
+        </span>
 
-      <section class="user-card">
+        <strong>
+          {{ totalGoals }}
+        </strong>
 
-
-        <div class="user-icon">
-          👤
-        </div>
-
-
-        <div>
-
-          <h2>
-            Usuario con mayor puntaje
-          </h2>
-
-
-          <p>
-            {{topUserName }}
-          </p>
-
-
-          <span>
-            ⭐ {{ topPredictionUser?.points }} puntos
-          </span>
-
-        </div>
-
-
-      </section>
-
+      </div>
 
 
     </div>
 
 
+  </section>
+
+
+
+
+
+  <!-- Indicadores principales -->
+
+  <div class="cards-grid">
+
+
+
+    <div class="card">
+
+
+      <div class="icon">
+        🏟
+      </div>
+
+
+      <h3>
+        Ronda actual
+      </h3>
+
+
+      <strong>
+        {{ tournamentStage }}
+      </strong>
+
+
+    </div>
+
+
+
+
+
+    <div class="card">
+
+
+      <div class="icon">
+        🏆
+      </div>
+
+
+      <h3>
+        Selecciones clasificadas
+      </h3>
+
+
+      <strong>
+        {{ qualifiedTeams }}
+      </strong>
+
+
+    </div>
+
+
+
+
+
+    <div class="card">
+
+
+      <div class="icon">
+        🎯
+      </div>
+
+
+      <h3>
+        Predicciones realizadas
+      </h3>
+
+
+      <strong>
+        {{ predictionsCount }}
+      </strong>
+
+
+    </div>
+
+
+
   </div>
+
+
+
+
+
+
+  <!-- Usuario destacado -->
+
+
+  <section class="user-card">
+
+
+    <div class="user-icon">
+      👤
+    </div>
+
+
+    <div>
+
+
+      <h2>
+        Usuario con mayor puntaje
+      </h2>
+
+
+      <p>
+        {{ topUserName }}
+      </p>
+
+
+      <span>
+        ⭐ {{ topPredictionUser?.points || 0 }} puntos
+      </span>
+
+
+    </div>
+
+
+  </section>
+
+
+
+
+</div>
 
 
 </template>
 
 <script setup>
+const tournamentStage = ref("")
 const topUserName = ref("")
 const {
 
@@ -222,9 +243,13 @@ const {
 
   loadTotalGoals,
 
-  loadQualifiedTeams
+  loadQualifiedTeams,
+   currentStage,
+    loadCurrentStage
 
 } = useMatches()
+
+
 
 const {
 
@@ -300,13 +325,18 @@ onMounted(async () => {
 
   await loadTotalGoals()
 
-  await loadQualifiedTeams("Dieciseisavos")
-
   await loadTopUser()
 await loadPredictionsCountByUser(authUser.value.uid)
+await loadCurrentStage()
 
 
-})
+await loadCurrentStage() 
+console.log("Ronda actual:", currentStage.value)
+tournamentStage.value = currentStage.value
+
+    await loadQualifiedTeams(
+        tournamentStage.value
+    )})
 
 </script>
 <style scoped>

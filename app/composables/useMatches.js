@@ -16,7 +16,8 @@ import {
   getPendingMatches,
   getTotalGoals,
   getQualifiedTeams,
- getAvailableMatchesForPredictions
+ getAvailableMatchesForPredictions,
+ getCurrentStage
 } from "~/services/matchesService"
 
 import { useStandings } from "~/composables/useStandings"
@@ -438,6 +439,15 @@ const loadAvailableMatchesForPredictions = async () => {
 
 }
 
+const currentStage = ref("")
+
+
+const loadCurrentStage = async () => {
+
+    currentStage.value =
+        await getCurrentStage()
+
+}
   return {
     matches,
     match,
@@ -448,7 +458,8 @@ const loadAvailableMatchesForPredictions = async () => {
   totalGoals,
   qualifiedTeams,
     
-
+loadCurrentStage,
+currentStage,
     loading,
     error,
     loadMatches,

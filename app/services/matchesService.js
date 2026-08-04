@@ -328,3 +328,43 @@ export const getAvailableMatchesForPredictions = async () => {
     ...document.data()
   }))
 }
+
+export const getCurrentStage = async () => {
+
+    const stages = [
+        "Final",
+        "Tercer lugar",
+        "Semifinal",
+        "Cuartos",
+        "Octavos",
+        "Dieciseisavos",
+        "Fase de grupos"
+    ]
+
+
+    const { $db } = useNuxtApp()
+
+
+    for (const stage of stages) {
+
+        const q = query(
+            collection($db, "matches"),
+            where("stage", "==", stage)
+        )
+
+
+        const snapshot = await getDocs(q)
+
+
+        if (!snapshot.empty) {
+
+            return stage
+
+        }
+
+    }
+
+
+    return null
+
+}
