@@ -20,8 +20,6 @@
           <option value="" disabled>Fase</option>
           <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
         </select>
-
-        <input v-model.number="form.bracketPosition" type="number" min="1" placeholder="Posición en el bracket"/>
       </div>
 
       <div v-if="loadingOptions" class="state-message">
@@ -50,18 +48,19 @@
       </div>
 
       <div class="form-row">
-        <input v-model="form.stadium" placeholder="Estadio" />
-        <input v-model="form.city" placeholder="Ciudad" />
+        <input v-model="form.stadium" placeholder="Estadio" required/>
+        <input v-model="form.city" placeholder="Ciudad" required/>
       </div>
 
       <div class="form-row">
-        <input v-model="form.kickoff" type="datetime-local" />
+        <input v-model="form.date" type="datetime-local" required />
       </div>
 
       <button type="submit" class="btn-primary" :disabled="!canSubmit">
         Crear partido
       </button>
-      <NuxtLink :to="`/brackets`" class="btn-primary">Volver</NuxtLink>
+    
+      <NuxtLink :to="`/brackets`" class="btn-refresh">Volver</NuxtLink>
     </form>
 
   </div>
@@ -100,12 +99,11 @@ const teamOptions = ref([])
 
 const emptyForm = () => ({
   stage: '',
-  bracketPosition: null,
   homeTeam: '',
   awayTeam: '',
   stadium: '',
   city: '',
-  kickoff: '',
+  date: '',
   status: 'Programado',
   homeScore: null,
   awayScore: null,
@@ -116,7 +114,7 @@ const emptyForm = () => ({
 const form = ref(emptyForm())
 
 const canSubmit = computed(() => {
-  return form.value.stage && form.value.homeTeam && form.value.awayTeam && form.value.bracketPosition
+  return form.value.stage && form.value.homeTeam && form.value.awayTeam && form.value.date && form.value.stadium && form.value.city 
 })
 
 const handleStageChange = async () => {
@@ -196,6 +194,17 @@ onMounted(async () => {
   gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
+.btn-refresh {
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #333;
+  margin-left: 0.5rem;
+  
+}
 
 .form-row input,
 .form-row select {
@@ -212,6 +221,7 @@ onMounted(async () => {
   padding: 0.6rem 1.2rem;
   border-radius: 4px;
   cursor: pointer;
+  
 }
 
 .btn-primary:disabled {

@@ -200,4 +200,23 @@ onMounted(async () => {
 .state-message.error {
   color: #d1242f;
 }
+
+.btn-refresh {
+  background: #1a7f37;;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #1a7f37;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none
+}
 </style>

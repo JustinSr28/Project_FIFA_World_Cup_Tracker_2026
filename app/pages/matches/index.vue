@@ -35,12 +35,12 @@
       </div>
 
       <div class="form-row">
-        <input v-model="form.stadium" placeholder="Estadio" />
-        <input v-model="form.city" placeholder="Ciudad" />
+        <input v-model="form.stadium" placeholder="Estadio" required />
+        <input v-model="form.city" placeholder="Ciudad" required />
       </div>
 
       <div class="form-row">
-        <input v-model="form.kickoff" type="datetime-local" />
+        <input v-model="form.kickoff" type="datetime-local" required />
       </div>
 
       <button type="submit" class="btn-primary">Crear partido</button>
@@ -216,6 +216,7 @@ const handleToggleFavoriteMatch = async (matchId) => {
   padding: 0.6rem 1.2rem;
   border-radius: 4px;
   cursor: pointer;
+  text-decoration: none
 }
 
 .btn-refresh {

@@ -34,7 +34,7 @@
 
         <div v-else-if="favoriteMatchesList.length === 0" class="state-message">
           Aún no has marcado partidos como favoritos.
-          <NuxtLink to="/matches">Ir a partidos</NuxtLink>
+          <NuxtLink to="/matches/filter">Ir a partidos</NuxtLink>
         </div>
 
         <div v-else class="matches-grid">
@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useTeams } from '~/composables/useTeams'
 import { getMatchById } from '~/services/matchesService'
@@ -99,10 +99,17 @@ const loadFavoriteMatches = async () => {
   loading.value = false
 }
 
+watch(firestoreUser, async (newUser) => {
+  if (newUser) {
+    await loadFavoriteMatches()
+  }
+})
+
 onMounted(async () => {
   await loadTeams()
-  await loadFavoriteMatches()
+  await loadFavoriteMatches()   
 })
+
 </script>
 
 <style scoped>
