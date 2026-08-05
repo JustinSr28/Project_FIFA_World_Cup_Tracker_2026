@@ -39,6 +39,7 @@ onMounted(async () => {
   await loadPendingMatches()
   await loadTotalGoals()
   await loadTopUser()
+  
   await loadPredictionsCountByUser(authUser.value.uid)
   await loadCurrentStage()
   await loadCurrentStage()
@@ -60,56 +61,64 @@ onMounted(async () => {
   <div v-else-if="error" class="message error">{{ error }}</div>
   <div v-else class="dashboard">
     
-    <section class="main-card">
-      <div class="stats">
+   <section class="main-card">
+  <div class="stats">
 
-        <div class="stat-item">
-          <span> Partidos jugados </span>
-          <strong>{{ playedMatches }}</strong>
-        </div>
-       
-        <div class="stat-item">
-          <span>Partidos pendientes </span>
-          <strong>{{ pendingMatches }}</strong>
-        </div>
-
-        <div class="stat-item">
-          <span> Goles anotados</span>
-          <strong>{{ totalGoals }}</strong>
-        </div>
-
-      </div>
-    </section>
-    
-    <div class="cards-grid">
-
-      <div class="card">
-        <div class="icon">🏟 </div>
-        <h3>Ronda actual</h3>
-        <strong>{{ tournamentStage }}</strong>
-      </div>
-
-      <div class="card">
-        <div class="icon">🏆</div>
-        <h3>Selecciones clasificadas</h3>
-        <strong>{{ qualifiedTeams }}</strong>
-      </div>
-
-      <div class="card">
-        <div class="icon">🎯</div>
-        <h3>Predicciones realizadas </h3>
-        <strong>{{ predictionsCount }}</strong>
-      </div>
+    <div class="stat-item">
+      <span>Partidos jugados</span>
+      <strong>{{ playedMatches ?? 0 }}</strong>
     </div>
 
-    <section class="user-card">
-      <div class="user-icon">👤</div>
-      <div>
-        <h2>Usuario con mayor puntaje</h2>
-        <p>{{ topUserName }}</p>
-        <span>⭐ {{ topPredictionUser?.points || 0 }} puntos </span>
-      </div>
-    </section>
+    <div class="stat-item">
+      <span>Partidos pendientes</span>
+      <strong>{{ pendingMatches ?? 0 }}</strong>
+    </div>
+
+    <div class="stat-item">
+      <span>Goles anotados</span>
+      <strong>{{ totalGoals ?? 0 }}</strong>
+    </div>
+
+  </div>
+</section>
+
+<div class="cards-grid">
+
+  <div class="card">
+    <div class="icon">🏟</div>
+    <h3>Ronda actual</h3>
+    <strong>{{ tournamentStage || "Sin iniciar" }}</strong>
+  </div>
+
+  <div class="card">
+    <div class="icon">🏆</div>
+    <h3>Selecciones clasificadas</h3>
+    <strong>{{ qualifiedTeams ?? 0 }}</strong>
+  </div>
+
+  <div class="card">
+    <div class="icon">🎯</div>
+    <h3>Predicciones realizadas</h3>
+    <strong>{{ predictionsCount ?? 0 }}</strong>
+  </div>
+
+</div>
+
+<section class="user-card">
+  <div class="user-icon">👤</div>
+
+  <div>
+    <h2>Usuario con mayor puntaje</h2>
+
+    <p>{{ topUserName || "Sin datos" }}</p>
+
+    <span>
+      ⭐ {{ topPredictionUser?.points ?? 0 }} puntos
+    </span>
+  </div>
+</section>
+    
+    
   </div>
 
 </template>

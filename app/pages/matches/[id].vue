@@ -105,67 +105,165 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
 .edit-match-page {
-  max-width: 500px;
+  max-width: 700px;
   margin: 2rem auto;
-  padding: 1rem;
-  font-family: sans-serif;
+  padding: 0 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+h1 {
+  margin-bottom: 2rem;
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* ==========================
+   FORMULARIO
+========================== */
 
 .match-form {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #d6dce5;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
 }
 
+/* ==========================
+   RESUMEN DEL PARTIDO
+========================== */
+
 .match-summary {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
+  background: #f8fafc;
+  border: 1px solid #dbe3ec;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
 }
+
+.match-summary strong {
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.match-meta {
+  margin-top: .6rem;
+  color: #6b7280;
+  font-size: .9rem;
+}
+
+/* ==========================
+   CAMPOS
+========================== */
 
 .form-row {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .form-row input,
 .form-row select {
   flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: .85rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  font-size: .95rem;
+  transition: .25s;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  outline: none;
+  border-color: #355c7d;
+  box-shadow: 0 0 0 3px rgba(53, 92, 125, .15);
+}
+
+/* ==========================
+   BOTONES
+========================== */
+
+.btn-primary,
+.btn-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: .25s;
 }
 
 .btn-primary {
-  background: #1a7f37;
+  background: #355c7d;
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: #28465f;
 }
 
 .btn-refresh {
-  background: #eee;
-  border: 1px solid #ccc;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  color: #333;
-  margin-left: 0.5rem;
+  background: #eef2f7;
+  color: #374151;
+  border: 1px solid #cfd8e3;
+  margin-left: .8rem;
 }
 
+.btn-refresh:hover {
+  background: #dde6ef;
+}
+
+/* ==========================
+   MENSAJES
+========================== */
+
 .state-message {
-  padding: 1rem;
-  color: #666;
+  text-align: center;
+  padding: 2rem;
+  background: #f8fafc;
+  border: 1px solid #dbe3ec;
+  border-radius: 12px;
+  color: #6b7280;
 }
 
 .state-message.error {
-  color: #d1242f;
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #b91c1c;
 }
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+
+  .edit-match-page {
+    padding: 0 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-refresh {
+    width: 100%;
+    margin: 0;
+  }
+
+  .btn-refresh {
+    margin-top: .8rem;
+  }
+
+}
+
 </style>

@@ -1,7 +1,8 @@
 <template>
   <ReloadButton  :loading="loading"  @reload="loadTeams"/>
+  
   <div class="create-bracket-page">
-
+    <NuxtLink to="/brackets" class="back-link">← Volver a llaves eliminatorias</NuxtLink>
     <h1>Crear partido de eliminatoria</h1>
 
     <div v-if="checkingGroupStage" class="state-message">
@@ -174,67 +175,134 @@ onMounted(async () => {
   checkingGroupStage.value = false
 })
 </script>
-
 <style scoped>
+
 .create-bracket-page {
-  max-width: 600px;
+  max-width: 700px;
   margin: 2rem auto;
-  padding: 1rem;
-  font-family: sans-serif;
+  padding: 0 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
+h1 {
+  margin-bottom: 2rem;
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* ==========================
+   FORMULARIO
+========================== */
+
 .match-form {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #d6dce5;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
 }
 
 .form-row {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-.btn-refresh {
-  background: #eee;
-  border: 1px solid #ccc;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none;
-  color: #333;
-  margin-left: 0.5rem;
-  
+  gap: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .form-row input,
 .form-row select {
   flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: .85rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  font-size: .95rem;
+  transition: .25s;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  outline: none;
+  border-color: #355c7d;
+  box-shadow: 0 0 0 3px rgba(53, 92, 125, .15);
+}
+
+/* ==========================
+   BOTONES
+========================== */
+
+.btn-primary,
+.btn-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: .25s;
 }
 
 .btn-primary {
-  background: #1a7f37;
+  background: #355c7d;
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #28465f;
 }
 
 .btn-primary:disabled {
-  background: #999;
+  background: #cbd5e1;
+  color: #6b7280;
   cursor: not-allowed;
 }
 
+.btn-refresh {
+  margin-left: .8rem;
+  background: #eef2f7;
+  color: #374151;
+  border: 1px solid #cfd8e3;
+}
+
+.btn-refresh:hover {
+  background: #dde6ef;
+}
+
+/* ==========================
+   MENSAJES
+========================== */
+
 .state-message {
-  padding: 1rem;
-  color: #666;
+  text-align: center;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: #f8fafc;
+  border: 1px solid #dbe3ec;
+  border-radius: 12px;
+  color: #6b7280;
 }
 
 .state-message.error {
-  color: #d1242f;
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #b91c1c;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-bottom: .8rem;
+  color: #355c7d;
+  text-decoration: none;
+  font-weight: 600;
+  transition: .2s;
+}
+
+.back-link:hover {
+  color: #28465f;
+  transform: translateX(-3px);
 }
 </style>

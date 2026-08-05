@@ -104,119 +104,214 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
 .bracket-page {
-  max-width: 1100px;
+  max-width: 1500px;
   margin: 2rem auto;
-  padding: 1rem;
-  font-family: sans-serif;
+  padding: 0 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ==========================
+   HEADER
+========================== */
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  color: #1f2937;
 }
 
 .header-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
 }
+
+/* ==========================
+   BOTONES
+========================== */
+
+.btn-primary,
+.btn-refresh {
+  padding: .85rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: .25s;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #355c7d;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: #27455f;
+}
+
+.btn-refresh {
+  background: white;
+  color: #374151;
+  border: 1px solid #d6dce5;
+}
+
+.btn-refresh:hover {
+  background: #f3f4f6;
+}
+
+/* ==========================
+   COLUMNAS
+========================== */
 
 .bracket-grid {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   overflow-x: auto;
+  align-items: flex-start;
+  padding-bottom: 1rem;
 }
 
 .stage-column {
-  min-width: 220px;
-  flex-shrink: 0;
+  min-width: 290px;
+  background: #f8fafc;
+  border-radius: 18px;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
 }
 
 .stage-column h2 {
-  font-size: 1rem;
+  margin: 0 0 1rem;
   text-align: center;
-  margin-bottom: 0.75rem;
+  color: #355c7d;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
-.stage-empty {
-  color: #999;
-  font-size: 0.85rem;
-  text-align: center;
-  padding: 1rem 0;
-}
+/* ==========================
+   PARTIDOS
+========================== */
 
 .bracket-match {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.6rem;
+  background: white;
+  border-radius: 14px;
+  padding: 1rem;
   margin-bottom: 1rem;
-  background: #fafafa;
+  border: 1px solid #dbe3ec;
+  transition: .2s;
+}
+
+.bracket-match:hover {
+  transform: scale(1.02);
+  border-color: #355c7d;
 }
 
 .bracket-match.finished {
-  background: #f0fff4;
-  border-color: #b7e4c7;
+  background: #f9fcff;
 }
 
 .bracket-position {
-  font-size: 0.7rem;
-  color: #999;
-  margin-bottom: 0.3rem;
+  text-align: right;
+  font-size: .75rem;
+  color: #9ca3af;
+  margin-bottom: .8rem;
 }
 
 .bracket-team {
   display: flex;
   justify-content: space-between;
-  padding: 0.15rem 0;
-  font-size: 0.9rem;
+  align-items: center;
+  padding: .7rem 0;
+  font-size: .95rem;
+}
+
+.bracket-team+.bracket-team {
+  border-top: 1px solid #eef2f7;
+}
+
+.bracket-team span {
+  font-weight: bold;
 }
 
 .bracket-team.winner {
-  font-weight: bold;
-  color: #1a7f37;
+  color: #355c7d;
+  font-weight: 700;
 }
 
 .bracket-status {
-  font-size: 0.7rem;
-  color: #888;
-  margin-top: 0.3rem;
+  margin-top: .8rem;
+  text-align: center;
+  font-size: .8rem;
+  color: #6b7280;
 }
 
 .bracket-edit {
   display: block;
-  font-size: 0.75rem;
-  text-align: right;
-  margin-top: 0.3rem;
-  color: #555;
+  margin-top: 1rem;
+  text-align: center;
+  text-decoration: none;
+  background: #eef2f7;
+  color: #355c7d;
+  padding: .6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: .2s;
 }
 
+.bracket-edit:hover {
+  background: #dde6ef;
+}
+
+/* ==========================
+   MENSAJES
+========================== */
+
+.stage-empty,
 .state-message {
-  padding: 1rem;
-  color: #666;
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: white;
+  border: 1px dashed #cbd5e1;
+  color: #6b7280;
 }
 
 .state-message.error {
-  color: #d1242f;
+  border-style: solid;
+  background: #fff1f2;
+  color: #b91c1c;
+  border-color: #fecdd3;
 }
 
-.btn-refresh {
-  background: #1a7f37;;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-refresh {
+    width: 100%;
+  }
+
 }
 
-.btn-primary {
-  background: #1a7f37;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  text-decoration: none
-}
 </style>

@@ -103,6 +103,10 @@ const cancelar = () => {
                 <option>F</option>
                 <option>G</option>
                 <option>H</option>
+                <option>I</option>
+                <option>J</option>
+                <option>K</option>
+                <option>L</option>
             </select>
             <span v-if="errores.group" class="error">{{ errores.group }} </span>
         </div>

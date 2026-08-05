@@ -96,49 +96,141 @@ onMounted(async () => {
   await load()
 })
 </script>
-
 <style scoped>
+
 .standings-page {
-  max-width: 700px;
+  max-width: 1100px;
   margin: 2rem auto;
-  padding: 1rem;
-  font-family: sans-serif;
+  padding: 0 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ==========================
+   HEADER
+========================== */
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  gap: 1rem;
 }
+
+.header h1 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.btn-refresh {
+  padding: .75rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #cfd8e3;
+  background: #eef2f7;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 600;
+  transition: .25s;
+}
+
+.btn-refresh:hover {
+  background: #dde6ef;
+}
+
+/* ==========================
+   TABLA
+========================== */
 
 .standings-table {
   width: 100%;
   border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
 }
 
-.standings-table th,
-.standings-table td {
-  padding: 0.5rem;
-  text-align: center;
-  border-bottom: 1px solid #eee;
+.standings-table thead {
+  background: #355c7d;
+  color: white;
 }
 
 .standings-table th {
-  background: #f5f5f5;
-  font-size: 0.85rem;
+  padding: 1rem .8rem;
+  font-size: .9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.standings-table td {
+  padding: .9rem .8rem;
+  text-align: center;
+  border-bottom: 1px solid #eef2f7;
+  color: #374151;
+}
+
+.standings-table tbody tr {
+  transition: .2s;
+}
+
+.standings-table tbody tr:hover {
+  background: #f8fafc;
 }
 
 .standings-table td:nth-child(2) {
   text-align: left;
+  font-weight: 600;
+  color: #1f2937;
 }
 
+.standings-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ==========================
+   MENSAJES
+========================== */
+
 .state-message {
-  padding: 1rem;
-  color: #666;
+  text-align: center;
+  padding: 2rem;
+  background: #f8fafc;
+  border: 1px solid #dbe3ec;
+  border-radius: 12px;
+  color: #6b7280;
 }
 
 .state-message.error {
-  color: #d1242f;
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #b91c1c;
 }
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 900px) {
+
+  .standings-page {
+    overflow-x: auto;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header h1 {
+    text-align: center;
+  }
+
+  .standings-table {
+    min-width: 760px;
+  }
+
+}
+
 </style>

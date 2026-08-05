@@ -71,7 +71,7 @@ const cancelar = () => {
 
         <div class="form-grupo">
             <label>Número </label>
-            <input v-model="formulario.number" :class="{ 'input-error': errores.number }" type="number" placeholder="Ej: 10">
+            <input v-model="formulario.number" :class="{ 'input-error': errores.number }" type="number" min = "0" placeholder="Ej: 10">
             <span v-if="errores.number" class="error">{{ errores.number }} </span>
         </div>
 

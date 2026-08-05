@@ -111,64 +111,169 @@ onMounted(async () => {
 })
 
 </script>
-
 <style scoped>
+
 .favorites-page {
-  max-width: 900px;
+  max-width: 1100px;
   margin: 2rem auto;
-  padding: 1rem;
-  font-family: sans-serif;
+  padding: 0 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.favorite-team-section {
+h1 {
   margin-bottom: 2rem;
+  color: #1f2937;
+  font-size: 2rem;
+  font-weight: 700;
 }
+
+.favorite-team-section,
+.favorite-matches-section {
+  margin-bottom: 2.5rem;
+}
+
+.favorite-team-section h2,
+.favorite-matches-section h2 {
+  margin-bottom: 1rem;
+  color: #374151;
+  font-size: 1.4rem;
+}
+
+/* ==========================
+   EQUIPO FAVORITO
+========================== */
 
 .favorite-team-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  max-width: 300px;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
 }
 
 .flag {
-  width: 60px;
-  height: 40px;
+  width: 90px;
+  height: 60px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
 }
+
+.favorite-team-card h3 {
+  margin: 0;
+  color: #1f2937;
+}
+
+.favorite-team-card p {
+  margin-top: .4rem;
+  color: #6b7280;
+}
+
+/* ==========================
+   PARTIDOS FAVORITOS
+========================== */
 
 .matches-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
 }
 
 .match-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.2rem;
+  transition: .2s;
+}
+
+.match-card:hover {
+  border-color: #355c7d;
+}
+
+.match-info {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.match-info strong {
+  font-weight: 700;
 }
 
 .badge {
-  margin-left: 0.5rem;
-  background: #f0f0f0;
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  margin-left: auto;
+  background: #355c7d;
+  color: white;
+  padding: .3rem .8rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
 }
 
 .match-meta {
-  color: #888;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
+  margin-top: .8rem;
+  padding-top: .8rem;
+  border-top: 1px solid #eef2f7;
+  color: #6b7280;
+  font-size: .9rem;
 }
 
+/* ==========================
+   MENSAJES
+========================== */
+
 .state-message {
-  padding: 1rem;
-  color: #666;
+  padding: 1.5rem;
+  text-align: center;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #6b7280;
 }
+
+.state-message a {
+  display: inline-block;
+  margin-top: .8rem;
+  color: #355c7d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.state-message a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+
+  .favorite-team-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .matches-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .match-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .badge {
+    margin-left: 0;
+  }
+
+}
+
 </style>
