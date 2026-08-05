@@ -43,7 +43,11 @@
         <input v-model="form.kickoff" type="datetime-local" required />
       </div>
 
-      <button type="submit" class="btn-primary">Crear partido</button>
+      <p v-if="form.homeTeam && form.awayTeam && form.homeTeam === form.awayTeam" class="error-text">
+        Un equipo no puede enfrentarse a sí mismo
+      </p>
+
+      <button type="submit" class="btn-primary" :disabled="!canSubmit" >Crear partido</button>
     </form>
 
     <div class="matches-list">
@@ -122,6 +126,10 @@ const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
 
 
 const form = ref(emptyForm())
+
+const canSubmit = computed(() => {
+  return form.value.awayTeam != form.value.homeTeam
+})
 
 const handleCreate = async () => {
 
@@ -308,6 +316,9 @@ const handleToggleFavoriteMatch = async (matchId) => {
   background: #fff1f2;
   border-color: #fecdd3;
 }
+.error-text {
+    color: #b91c1c;
+  }
 
 /* ==========================
    LISTA
@@ -420,6 +431,10 @@ const handleToggleFavoriteMatch = async (matchId) => {
   .btn-danger,
   .btn-refresh {
     width: 100%;
+  }
+
+  .error-text {
+    color: #b91c1c;
   }
 }
 

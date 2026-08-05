@@ -32,11 +32,15 @@
       </div>
 
       <div class="form-row">
-        <input v-model.number="editForm.homeScore" type="number" min="0" placeholder="Goles local" />
-        <input v-model.number="editForm.awayScore" type="number" min="0" placeholder="Goles visitante" />
+        <input v-model.number="editForm.homeScore" type="number" min="0" placeholder="Goles local" required/>
+        <input v-model.number="editForm.awayScore" type="number" min="0" placeholder="Goles visitante" required />
       </div>
 
-      <button type="submit" class="btn-primary">Guardar cambios</button>
+      <p v-if="!match?.group && editForm.status === 'Finalizado' && editForm.homeScore === editForm.awayScore" class="error-text">
+        En fase eliminatoria no pueden haber empates
+      </p>
+
+      <button type="submit" class="btn-primary" :disabled="!canSubmit"> Guardar cambios</button>
       <NuxtLink :to="match?.group ? '/matches' : '/brackets'" class="btn-refresh">Volver</NuxtLink>
 
     </form>
@@ -45,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMatches } from '~/composables/useMatches'
 import { useTeams } from '~/composables/useTeams'
@@ -76,22 +80,26 @@ watch(match, (newMatch) => {
   }
 })
 
+const canSubmit = computed(() => {
+
+  const isKnockoutMatch = !match.value?.group
+
+  if (isKnockoutMatch && editForm.value.status === 'Finalizado') {
+    return editForm.value.homeScore !== editForm.value.awayScore
+  }
+  return true
+
+})
+
 const handleSave = async () => {
 
-  const isKnockoutMatch = !match.value.group
-
-  if (isKnockoutMatch && editForm.value.status === 'Finalizado' && editForm.value.homeScore === editForm.value.awayScore) {
-    alert("Un partido de eliminatoria no puede terminar en empate")
-    return
-  }
+   const isKnockoutMatch = !match.value.group
 
   await editMatch(match.value.id, { ...match.value, ...editForm.value })
-const updatedMatch = {
-    ...match.value,
-    ...editForm.value
+  const updatedMatch = {
+      ...match.value,
+      ...editForm.value
 }
-
-console.log("Partido actualizado:", updatedMatch)
 
  updatePredictionScores(updatedMatch)
 
@@ -265,5 +273,9 @@ h1 {
   }
 
 }
+
+.error-text {
+    color: #b91c1c;
+  }
 
 </style>

@@ -57,6 +57,10 @@
         <input v-model="form.date" type="datetime-local" required />
       </div>
 
+      <p v-if="form.homeTeam && form.awayTeam && form.homeTeam === form.awayTeam" class="error-text">
+        Un equipo no puede enfrentarse a sí mismo
+      </p>
+
       <button type="submit" class="btn-primary" :disabled="!canSubmit">
         Crear partido
       </button>
@@ -115,7 +119,7 @@ const emptyForm = () => ({
 const form = ref(emptyForm())
 
 const canSubmit = computed(() => {
-  return form.value.stage && form.value.homeTeam && form.value.awayTeam && form.value.date && form.value.stadium && form.value.city 
+  return form.value.stage && form.value.homeTeam && form.value.awayTeam && form.value.date && form.value.stadium && form.value.city && form.value.awayTeam != form.value.homeTeam
 })
 
 const handleStageChange = async () => {
@@ -305,4 +309,8 @@ h1 {
   color: #28465f;
   transform: translateX(-3px);
 }
+
+.error-text {
+    color: #b91c1c;
+  }
 </style>
